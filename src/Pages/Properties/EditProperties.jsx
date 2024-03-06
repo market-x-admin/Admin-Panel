@@ -53,7 +53,7 @@ const EditProperties = () => {
     data.second_floor_map_image = uploadedImages.second_floor_map_image;
     data.sub_image_1 = uploadedImages.sub_image_1;
     data.sub_image_2 = uploadedImages.sub_image_2;
-    const url = `http://ec2-16-171-125-5.eu-north-1.compute.amazonaws.com:3000/api/update/Properties/${id}`;
+    const url = `http://16.170.205.35:3000/api/update/Properties/${id}`;
   
     setLoading(true); 
   

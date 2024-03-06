@@ -16,7 +16,7 @@ const Users = () => {
       {/* ced9da */}
       <div className="flex ">
         <div className="flex w-1/2 justify-start p-8 bg-[#f1fffe] m-4 rounded-lg">
-          <img src={userImg} alt="user" />
+          <img src={userImg} alt="user" width={100}/>
           <div className="ml-6 mt-2">
             <p className="uppercase text-[#1ebbd7] font-semibold">admin</p>
             <p className="text-gray-500">admin@beetkom.com</p>
@@ -26,7 +26,7 @@ const Users = () => {
           </div>
         </div>
         <div className="flex w-1/2 justify-start p-10 bg-[#f1fffe] m-4 rounded-lg">
-          <img className="w-44" src={logoImg} alt="logo" />
+          <img width={64} src={logoImg} alt="logo" />
         </div>
       </div>
       <TableBar />

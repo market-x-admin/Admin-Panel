@@ -30,7 +30,7 @@ const Form = () => {
     data.sub_image_1 = uploadedImages.sub_image_1;
     data.sub_image_2 = uploadedImages.sub_image_2;
     data.second_floor_map_image = uploadedImages.second_floor_map_image;
-    const url = 'http://ec2-16-171-125-5.eu-north-1.compute.amazonaws.com:3000/api/write/Properties';
+    const url = 'http://16.170.205.35:3000/api/write/Properties';
   
     setLoading(true);
   
@@ -288,7 +288,7 @@ const Form = () => {
             />
         <div className="flex flex-col space-y-4">
         <Upload
-  title="Upload Image"
+  title="main image"
   onFileUpload={(base64String) => handleFileUpload(base64String, 'main_image')}
   register={register}
   fieldName="main_image"
@@ -300,7 +300,7 @@ const Form = () => {
 
 <div className="flex flex-col space-y-4">
 <Upload
-  title="Upload Image"
+  title="first floor map image"
   onFileUpload={(base64String) => handleFileUpload(base64String, 'first_floor_map_image')}
   register={register}
   fieldName="first_floor_map_image"
@@ -309,27 +309,22 @@ const Form = () => {
          <img src={`${uploadedImages.first_floor_map_image}`} alt="uploadedImage" width={140} className='mb-6' />
       )}
 </div>
-
-<div className="flex flex-col space-y-4">
-  <Upload
-    title="Upload Second floor map image "
-    onFileUpload={(base64String) => handleFileUpload(base64String, 'second_floor_map_image')}
-    register={register}
-    fieldName="second_floor_map_image"
-  />
-  {propertyData ? propertyData.second_floor_map_image && (
-    uploadedImages.second_floor_map_image ? (
-      <img src={`${uploadedImages.second_floor_map_image}`} alt="uploadedImage" width={140} className='mb-6' />
-    ) : (
-      propertyData.second_floor_map_image && (
-        <img src={`${propertyData.second_floor_map_image}`} alt="propertyImage" width={140} className='mb-6' />
-      )
-    )
-  ): null}
-</div>
 <div className="flex flex-col space-y-4">
 <Upload
-  title="Upload Image"
+  title="second_floor_map_image"
+  onFileUpload={(base64String) => handleFileUpload(base64String, 'second_floor_map_image')}
+  register={register}
+  fieldName="second_floor_map_image"
+/>
+{uploadedImages.second_floor_map_image && (
+         <img src={`${uploadedImages.second_floor_map_image}`} alt="uploadedImage" width={140} className='mb-6' />
+      )}
+</div>
+
+
+<div className="flex flex-col space-y-4">
+<Upload
+  title="sub image 1"
   onFileUpload={(base64String) => handleFileUpload(base64String, 'sub_image_1')}
   register={register}
   fieldName="sub_image_1"
@@ -340,7 +335,7 @@ const Form = () => {
 </div>
 <div className="flex flex-col space-y-4">
 <Upload
-  title="Upload Image"
+  title="sub image 2"
   onFileUpload={(base64String) => handleFileUpload(base64String, 'sub_image_2')}
   register={register}
   fieldName="sub_image_2"
