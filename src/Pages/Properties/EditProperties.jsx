@@ -45,29 +45,45 @@ const EditProperties = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log("formData", data)
-     
-    data.main_image = uploadedImages.main_image;
-    
-    data.first_floor_map_image = uploadedImages.first_floor_map_image;
-    data.second_floor_map_image = uploadedImages.second_floor_map_image;
-    data.sub_image_1 = uploadedImages.sub_image_1;
-    data.sub_image_2 = uploadedImages.sub_image_2;
+    console.log("formData", data);
+  
+    // Conditionally update image fields only if a new image is selected
+    if (uploadedImages.main_image) {
+      data.main_image = uploadedImages.main_image;
+    }
+  
+    if (uploadedImages.first_floor_map_image) {
+      data.first_floor_map_image = uploadedImages.first_floor_map_image;
+    }
+  
+    if (uploadedImages.second_floor_map_image) {
+      data.second_floor_map_image = uploadedImages.second_floor_map_image;
+    }
+  
+    if (uploadedImages.sub_image_1) {
+      data.sub_image_1 = uploadedImages.sub_image_1;
+    }
+  
+    if (uploadedImages.sub_image_2) {
+      data.sub_image_2 = uploadedImages.sub_image_2;
+    }
+  
     const url = `http://16.170.205.35:3000/api/update/Properties/${id}`;
   
-    setLoading(true); 
+    setLoading(true);
   
     try {
       const response = await axios.put(url, data);
-      
+  
       console.log('Success:', response.data);
-      navigate("/properties")
+      navigate("/properties");
     } catch (error) {
       console.error('Error:', error);
     } finally {
       setLoading(false);
     }
   };
+  
   const listing = [
     { value: "Buy", label: "Buy" },
     { value: "Rent", label: "Rent" },
