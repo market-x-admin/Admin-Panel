@@ -1,0 +1,12 @@
+.pagination{
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+.active{
+    background-color: #70bcd7;
+    color: white;
+    padding: 0 4px;
+
+}

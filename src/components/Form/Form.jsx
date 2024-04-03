@@ -6,41 +6,47 @@ import { useNavigate } from "react-router-dom";
 import Upload from "../Upload";
 import axios from "axios";
 import { useForm } from "react-hook-form";
-
+import Header from "../Header"
 import { addDataApi } from "../../api/api";
+import {Link} from "react-router-dom"
 const Form = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
   const [uploadedImages, setUploadedImages] = useState({
     main_image: "",
     first_floor_map_image: "",
-    second_floor_map_image: ""  ,
+    second_floor_map_image: "",
     sub_image_1: "",
     sub_image_2: "",
   });
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm();
 
   const onSubmit = async (data) => {
     console.log("formData", data);
-  
-    
+
     data.main_image = uploadedImages.main_image;
     data.first_floor_map_image = uploadedImages.first_floor_map_image;
     data.second_floor_map_image = uploadedImages.second_floor_map_image;
     data.sub_image_1 = uploadedImages.sub_image_1;
     data.sub_image_2 = uploadedImages.sub_image_2;
     data.second_floor_map_image = uploadedImages.second_floor_map_image;
-    const url = 'http://16.170.205.35:3000/api/write/Properties';
-  
+    const url = "http://16.170.205.35:3001/api/write/Properties";
+
     setLoading(true);
-  
+
     try {
-      const response = await axios.post(url, data);
-  
-      console.log('Success:', response.data);
-      navigate("/properties");
+     
+      localStorage.setItem("engData", JSON.stringify(data));
+
+      console.log("Success:", data);
+    navigate("/add-property-ar")
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     } finally {
       setLoading(false);
     }
@@ -75,14 +81,23 @@ const Form = () => {
   };
   return (
     <>
-      <div className="p-20">
+    <Header/>
+    {/* <div className='px-10 flex justify-between w-full items-center'>
+        <Link
+        to={`/add_properties`} 
+         >English</Link>
+        <Link to={`/add-property-ar`}>Arabic</Link>
+      </div> */}
+      <div className="px-20 py-10">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="p-4 flex flex-col w-full"
         >
-          <h1>Add New Property</h1>
-          <div className="grid grid-cols-3 gap-4 p-10">
-            <InputDesign
+          <h1 className="text-2xl flex w-full items-center justify-center uppercase text-[#6b748c]">Add New    
+           <span className="text-[#70bcd7] font-semibold ml-2">   Property</span></h1>
+          <div className=" p-10">
+           <div className="grid grid-cols-3 gap-4">
+           <InputDesign
               register={register}
               fieldName={"title"}
               required={true}
@@ -115,13 +130,9 @@ const Form = () => {
               required={true}
               options={catogery}
             />
-            <InputDesign
-              register={register}
-              fieldName={"description"}
-              required={true}
-              title="description"
-              type="text"
-            />
+            
+            
+           
             <InputDesign
               register={register}
               fieldName={"contact_no"}
@@ -129,6 +140,12 @@ const Form = () => {
               title="contact No"
               type="text"
             />
+             <textarea
+            placeholder="Description"
+            className="border outline-0 p-2"
+             name="description" id="description" cols="30" rows="5" 
+             {...register("description", { required: true })}
+             />
             <InputDesign
               register={register}
               fieldName={"size"}
@@ -177,39 +194,21 @@ const Form = () => {
               title="floor Type"
               type="text"
             />
-            <Checkbox
-              register={register}
-              fieldName={"is_floor_available"}
-              required={true}
-              label="is FLoor Availible"
-            />
-            <InputDesign
+             <InputDesign
               register={register}
               fieldName={"additional_space_type"}
               required={true}
               title="additional Space Type"
               type="text"
             />
-            <Checkbox
-              register={register}
-              fieldName={"is_additional_space"}
-              required={true}
-              label="Is aditional Space"
-            />
-            <InputDesign
+             <InputDesign
               register={register}
               fieldName={"furnished_type"}
               required={true}
               title="furnished Type"
               type="text"
             />
-            <Checkbox
-              register={register}
-              fieldName={"is_furnished"}
-              required={true}
-              label="Is furnished"
-            />
-            <InputDesign
+               <InputDesign
               register={register}
               fieldName={"revolution_date"}
               required={true}
@@ -223,14 +222,7 @@ const Form = () => {
               title="ceiling Height"
               type="text"
             />
-            <Checkbox
-              register={register}
-              fieldName={"is_ceiling"}
-              required={true}
-              label = "Is ceiling"
-              
-            />
-            <InputDesign
+             <InputDesign
               register={register}
               fieldName={"construction_year"}
               required={true}
@@ -286,69 +278,133 @@ const Form = () => {
               title="video Url"
               type="text"
             />
-        <div className="flex flex-col space-y-4">
-        <Upload
-  title="main image"
-  onFileUpload={(base64String) => handleFileUpload(base64String, 'main_image')}
-  register={register}
-  fieldName="main_image"
-/>
-{uploadedImages.main_image && (
-         <img src={`${uploadedImages.main_image}`} alt="uploadedImage" width={140} className='mb-6' />
-      )}
-        </div>
-
-<div className="flex flex-col space-y-4">
-<Upload
-  title="first floor map image"
-  onFileUpload={(base64String) => handleFileUpload(base64String, 'first_floor_map_image')}
-  register={register}
-  fieldName="first_floor_map_image"
-/>
-{uploadedImages.first_floor_map_image && (
-         <img src={`${uploadedImages.first_floor_map_image}`} alt="uploadedImage" width={140} className='mb-6' />
-      )}
-</div>
-<div className="flex flex-col space-y-4">
-<Upload
-  title="second_floor_map_image"
-  onFileUpload={(base64String) => handleFileUpload(base64String, 'second_floor_map_image')}
-  register={register}
-  fieldName="second_floor_map_image"
-/>
-{uploadedImages.second_floor_map_image && (
-         <img src={`${uploadedImages.second_floor_map_image}`} alt="uploadedImage" width={140} className='mb-6' />
-      )}
-</div>
-
-
-<div className="flex flex-col space-y-4">
-<Upload
-  title="sub image 1"
-  onFileUpload={(base64String) => handleFileUpload(base64String, 'sub_image_1')}
-  register={register}
-  fieldName="sub_image_1"
-/>
-{uploadedImages.sub_image_1 && (
-         <img src={`${uploadedImages.sub_image_1}`} alt="uploadedImage" width={140} className='mb-6' />
-      )}
-</div>
-<div className="flex flex-col space-y-4">
-<Upload
-  title="sub image 2"
-  onFileUpload={(base64String) => handleFileUpload(base64String, 'sub_image_2')}
-  register={register}
-  fieldName="sub_image_2"
-/>
-{uploadedImages.sub_image_2 && (
-         <img src={`${uploadedImages.sub_image_2}`} alt="uploadedImage" width={140} className='mb-6' />
-      )}
-</div>
+           </div>
+          <div className="grid grid-cols-4 py-10">
+          <Checkbox
+              register={register}
+              fieldName={"is_floor_available"}
+              required={true}
+              label="is FLoor Availible"
+            />
            
-          
+            <Checkbox
+              register={register}
+              fieldName={"is_additional_space"}
+              required={true}
+              label="Is aditional Space"
+            />
+           
+            <Checkbox
+              register={register}
+              fieldName={"is_furnished"}
+              required={true}
+              label="Is furnished"
+            />
+         
+            <Checkbox
+              register={register}
+              fieldName={"is_ceiling"}
+              required={true}
+              label="Is ceiling"
+            />
            
           </div>
-          <h1>Property Good Details</h1>
+            <div className="grid grid-cols-3 gap-7">
+            <div className="flex flex-col space-y-4">
+              <Upload
+                title="main image"
+                onFileUpload={(base64String) =>
+                  handleFileUpload(base64String, "main_image")
+                }
+                register={register}
+                fieldName="main_image"
+              />
+              {uploadedImages.main_image && (
+                <img
+                  src={`${uploadedImages.main_image}`}
+                  alt="uploadedImage"
+                  width={140}
+                  className="mb-6"
+                />
+              )}
+            </div>
+
+            <div className="flex flex-col space-y-4">
+              <Upload
+                title="first floor map image"
+                onFileUpload={(base64String) =>
+                  handleFileUpload(base64String, "first_floor_map_image")
+                }
+                register={register}
+                fieldName="first_floor_map_image"
+              />
+              {uploadedImages.first_floor_map_image && (
+                <img
+                  src={`${uploadedImages.first_floor_map_image}`}
+                  alt="uploadedImage"
+                  width={140}
+                  className="mb-6"
+                />
+              )}
+            </div>
+            <div className="flex flex-col space-y-4">
+              <Upload
+                title="second_floor_map_image"
+                onFileUpload={(base64String) =>
+                  handleFileUpload(base64String, "second_floor_map_image")
+                }
+                register={register}
+                fieldName="second_floor_map_image"
+              />
+              {uploadedImages.second_floor_map_image && (
+                <img
+                  src={`${uploadedImages.second_floor_map_image}`}
+                  alt="uploadedImage"
+                  width={140}
+                  className="mb-6"
+                />
+              )}
+            </div>
+
+            <div className="flex flex-col space-y-4">
+              <Upload
+                title="sub image 1"
+                onFileUpload={(base64String) =>
+                  handleFileUpload(base64String, "sub_image_1")
+                }
+                register={register}
+                fieldName="sub_image_1"
+              />
+              {uploadedImages.sub_image_1 && (
+                <img
+                  src={`${uploadedImages.sub_image_1}`}
+                  alt="uploadedImage"
+                  width={140}
+                  className="mb-6"
+                />
+              )}
+            </div>
+            <div className="flex flex-col space-y-4">
+              <Upload
+                title="sub image 2"
+                onFileUpload={(base64String) =>
+                  handleFileUpload(base64String, "sub_image_2")
+                }
+                register={register}
+                fieldName="sub_image_2"
+              />
+              {uploadedImages.sub_image_2 && (
+                <img
+                  src={`${uploadedImages.sub_image_2}`}
+                  alt="uploadedImage"
+                  width={140}
+                  className="mb-6"
+                />
+              )}
+            </div>
+          </div>
+            </div>
+          <h1 className="text-2xl px-8">Property <span className="text-[#70bcd7] font-semibold">Good Details</span></h1>
           <div className="grid grid-cols-3 gap-4 p-10">
             <InputDesign
               register={register}
@@ -380,25 +436,25 @@ const Form = () => {
               register={register}
               fieldName={"has_window"}
               required={true}
-              label ="Has Window"
+              label="Has Window"
             />
             <Checkbox
               register={register}
               fieldName={"has_air_conditioners"}
               required={true}
-              label = "has Air Conditioners"
+              label="has Air Conditioners"
             />
             <Checkbox
               register={register}
               fieldName={"has_cable_tv"}
               required={true}
-              label = "Has Cable TV"
+              label="Has Cable TV"
             />
             <Checkbox
               register={register}
               fieldName={"has_fire_place"}
               required={true}
-              label= "Has fire place"
+              label="Has fire place"
             />
             <Checkbox
               register={register}
@@ -410,19 +466,19 @@ const Form = () => {
               register={register}
               fieldName={"has_wifi"}
               required={true}
-              label = " has wifi"
+              label=" has wifi"
             />
             <Checkbox
               register={register}
               fieldName={"has_ventillation"}
               required={true}
-              label = " has Ventillation"
+              label=" has Ventillation"
             />
             <Checkbox
               register={register}
               fieldName={"has_garage"}
               required={true}
-              label = " has Garage"
+              label=" has Garage"
             />
             <Checkbox
               register={register}
@@ -434,16 +490,17 @@ const Form = () => {
               register={register}
               fieldName={"has_parking"}
               required={true}
-              label = "Has Parking"
+              label="Has Parking"
             />
             <Checkbox
               register={register}
               fieldName={"has_garden"}
               required={true}
-              label = "Has Garden"
+              label="Has Garden"
             />
           </div>
-          <h1>proeprty Nearby Details</h1>
+          <h1 className="text-2xl px-8">Property <span className="text-[#70bcd7] font-semibold">Nearby Details</span></h1>
+         
           <div className="grid grid-cols-3 gap-4 p-10">
             <InputDesign
               register={register}
@@ -464,7 +521,6 @@ const Form = () => {
               fieldName={"hospital_distance"}
               required={true}
               title="hospital Distance"
-              
               type="text"
             />
             <InputDesign
@@ -516,7 +572,7 @@ const Form = () => {
               // onClick={() => handleSubmit(handleFormSubmit)()}
               className="bg-[#1ebbd7] py-2 px-44 rounded-lg text-white"
             >
-           {loading? "SUbmitting..." :  " Submit"}
+              {loading ? "loading..." : " Next"}
             </button>
           </div>
           {errors && Object.keys(errors).length > 0 && (
@@ -525,7 +581,9 @@ const Form = () => {
             </div>
           )}
         </form>
+       
       </div>
+    
     </>
   );
 };

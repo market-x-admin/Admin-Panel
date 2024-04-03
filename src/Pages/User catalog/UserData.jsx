@@ -8,11 +8,14 @@ import { CSVLink, CSVDownload } from "react-csv";
 import downloadImg from "../../assets/download.png";
 import refreshBtn from "../../assets/refresh.png";
 import Search from "../../components/Search";
-
+import ReactPaginate from 'react-paginate';
+import "./user.css"
 const UserData = () => {
   const [user, setUser] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false)
+  const [currentPage, setCurrentPage] = useState(0);
+  const [usersPerPage] = useState(10);
   const fetchData = async () => {
     setLoading(true)
     try {
@@ -50,14 +53,25 @@ const UserData = () => {
       setLoading(false);
     }
   };
-  
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+  const indexOfLastUser = (currentPage + 1) * usersPerPage;
+  const indexOfFirstUser = indexOfLastUser - usersPerPage;
+  const currentUsers = user.slice(indexOfFirstUser, indexOfLastUser);
+
+  const pageCount = Math.ceil(user.length / usersPerPage);
   const renderDownloadBtn = () => (
     <div className="flex space-x-4">
       <CSVLink data={user}>
-        <img src={downloadImg} alt="downlaod" />
+        <img src={downloadImg} alt="downlaod"
+        title="downlaod"
+        />
       </CSVLink>
       <button onClick={handleRefresh}>
-        <img src={refreshBtn} alt="refresh" />
+        <img src={refreshBtn} alt="refresh"
+        title="Refresh"
+        />
       </button>
     </div>
   );
@@ -106,7 +120,19 @@ const displayIndex = index + 1
       <SubNavbar downButton={renderDownloadBtn} />
       <Search handleSearch={handleSearch} />
       {loading? "Loading...." :
-         <Table headers={header} data={user} rowrender={rowRenderer} />
+        <>
+        <Table headers={header} data={currentUsers} rowrender={rowRenderer} />
+        <ReactPaginate
+          previousLabel={"Previous"}
+          nextLabel={"Next"}
+          pageCount={pageCount}
+          marginPagesDisplayed={2}
+          pageRangeDisplayed={5}
+          onPageChange={handlePageClick}
+          containerClassName={"pagination"}
+          activeClassName={"active"}
+        />
+      </>
       }
    
     </div>

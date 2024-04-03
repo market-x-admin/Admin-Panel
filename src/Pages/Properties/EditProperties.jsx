@@ -7,35 +7,36 @@ import Upload from "../../components/Upload";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { getProperties } from "../../api/api";
-import Header from "../../components/Header"
+import Header from "../../components/Header";
 import { useParams } from "react-router-dom";
+import {arLabels} from "../../components/Form/arLabels"
 const EditProperties = () => {
-  const {id, index} = useParams()
-  const [loading, setLoading] = useState()
-  const [propertyData, setPropertyData] = useState(null)
-  const [file, setSelected] = useState("")
+  const { id, index } = useParams();
+  const [loading, setLoading] = useState();
+  const [propertyData, setPropertyData] = useState(null);
+  const [file, setSelected] = useState("");
   const [uploadedImages, setUploadedImages] = useState({
     main_image: "",
     first_floor_map_image: "",
-    second_floor_map_image: ""  ,
+    second_floor_map_image: "",
     sub_image_1: "",
     sub_image_2: "",
   });
-  const fetchSingleProperties = async()=>{
+  const fetchSingleProperties = async () => {
     const response = await getProperties();
-    
-      const propertiesData = response.data?.data?.[index];
-      console.log(propertiesData)
-      if (propertiesData) {
-        setPropertyData(propertiesData);
-        Object.keys(propertiesData).forEach((key) => {
-          setValue(key, propertiesData[key]);
-        });
-      }
-  }
-  useEffect(()=>{
-    fetchSingleProperties()
-  },[index])
+
+    const propertiesData = response.data?.data?.[index];
+    console.log(propertiesData);
+    if (propertiesData) {
+      setPropertyData(propertiesData);
+      Object.keys(propertiesData).forEach((key) => {
+        setValue(key, propertiesData[key]);
+      });
+    }
+  };
+  useEffect(() => {
+    fetchSingleProperties();
+  }, [index]);
   const navigate = useNavigate();
   const {
     register,
@@ -46,44 +47,44 @@ const EditProperties = () => {
 
   const onSubmit = async (data) => {
     console.log("formData", data);
-  
+
     // Conditionally update image fields only if a new image is selected
     if (uploadedImages.main_image) {
       data.main_image = uploadedImages.main_image;
     }
-  
+
     if (uploadedImages.first_floor_map_image) {
       data.first_floor_map_image = uploadedImages.first_floor_map_image;
     }
-  
+
     if (uploadedImages.second_floor_map_image) {
       data.second_floor_map_image = uploadedImages.second_floor_map_image;
     }
-  
+
     if (uploadedImages.sub_image_1) {
       data.sub_image_1 = uploadedImages.sub_image_1;
     }
-  
+
     if (uploadedImages.sub_image_2) {
       data.sub_image_2 = uploadedImages.sub_image_2;
     }
-  
-    const url = `http://16.170.205.35:3000/api/update/Properties/${id}`;
-  
+
+    // const url = `https://api.beetkom.org/api/update/Properties/${id}`;
+
     setLoading(true);
-  
+
     try {
-      const response = await axios.put(url, data);
-  
-      console.log('Success:', response.data);
-      navigate("/properties");
+      localStorage.setItem("engDataEdit", JSON.stringify(data));
+
+      console.log("Success:", data);
+      navigate(`/edit_properties_ar/${index}/${id}`);
     } catch (error) {
-      console.error('Error:', error);
+      console.error("Error:", error);
     } finally {
       setLoading(false);
     }
   };
-  
+
   const listing = [
     { value: "Buy", label: "Buy" },
     { value: "Rent", label: "Rent" },
@@ -110,12 +111,12 @@ const EditProperties = () => {
       [fieldName]: `data:image/jpeg;base64,${base64String}`,
     }));
   };
-  console.log(propertyData?.location_area)
+  console.log(propertyData?.location_area);
   return (
     <>
-    <Header/>
+      <Header />
       <div className="p-20">
-      <form
+        <form
           onSubmit={handleSubmit(onSubmit)}
           className="p-4 flex flex-col w-full"
         >
@@ -136,37 +137,29 @@ const EditProperties = () => {
               title="Sub Title"
               type="text"
             />
-           <SelectInputDesign
-            register={register}
-            fieldName={"listing_type"}
-            required={true}
-            options={listing}
-            value={propertyData ? propertyData?.listing_type : ''}
-/>
+            <SelectInputDesign
+              register={register}
+              fieldName={"listing_type"}
+              required={true}
+              options={listing}
+              value={propertyData ? propertyData?.listing_type : ""}
+            />
 
-        
             <SelectInputDesign
               register={register}
               fieldName={"category_type"}
               required={true}
               options={catogery}
-              value={propertyData ? propertyData.category_type : ''}
+              value={propertyData ? propertyData.category_type : ""}
             />
             <SelectInputDesign
               register={register}
               fieldName={"location_area"}
               required={true}
               options={location}
-              
-              value={propertyData ? propertyData.location_area : ''}
+              value={propertyData ? propertyData.location_area : ""}
             />
-            <InputDesign
-              register={register}
-              fieldName={"description"}
-              required={true}
-              title="description"
-              type="text"
-            />
+           
             <InputDesign
               register={register}
               fieldName={"contact_no"}
@@ -174,6 +167,12 @@ const EditProperties = () => {
               title="contact No"
               type="text"
             />
+             <textarea
+            placeholder="Description"
+            className="border outline-0 p-2"
+             name="description" id="description" cols="30" rows="5" 
+             {...register("description", { required: true })}
+             />
             <InputDesign
               register={register}
               fieldName={"size"}
@@ -272,8 +271,7 @@ const EditProperties = () => {
               register={register}
               fieldName={"is_ceiling"}
               required={true}
-              label = "Is ceiling"
-              
+              label="Is ceiling"
             />
             <InputDesign
               register={register}
@@ -331,92 +329,156 @@ const EditProperties = () => {
               title="video Url"
               type="text"
             />
-        <div className="flex flex-col space-y-4">
-        <Upload
-  title="Upload main image"
-  onFileUpload={(base64String) => handleFileUpload(base64String, 'main_image')}
-  register={register}
-  fieldName="main_image"
-/>
-{propertyData ? propertyData.main_image && (
-  uploadedImages.main_image ? (
-    <img src={`${uploadedImages.main_image}`} alt="uploadedImage" width={140} className='mb-6' />
-  ) : (
-    propertyData.main_image && (
-      <img src={`${propertyData.main_image}`} alt="propertyImage" width={140} className='mb-6' />
-    )
-  )
-) : null}
-        </div>
-<div className="flex flex-col space-y-4">
-  <Upload
-    title="Upload first floor map image "
-    onFileUpload={(base64String) => handleFileUpload(base64String, 'first_floor_map_image')}
-    register={register}
-    fieldName="first_floor_map_image"
-  />
-  {propertyData ? propertyData.first_floor_map_image && (
-    uploadedImages.first_floor_map_image ? (
-      <img src={`${uploadedImages.first_floor_map_image}`} alt="uploadedImage" width={140} className='mb-6' />
-    ) : (
-      propertyData.first_floor_map_image && (
-        <img src={`${propertyData.first_floor_map_image}`} alt="propertyImage" width={140} className='mb-6' />
-      )
-    )
-  ): null}
-</div>
-<div className="flex flex-col space-y-4">
-  <Upload
-    title="Upload Second floor map image "
-    onFileUpload={(base64String) => handleFileUpload(base64String, 'second_floor_map_image')}
-    register={register}
-    fieldName="second_floor_map_image"
-  />
-  {propertyData ? propertyData.second_floor_map_image && (
-    uploadedImages.second_floor_map_image ? (
-      <img src={`${uploadedImages.second_floor_map_image}`} alt="uploadedImage" width={140} className='mb-6' />
-    ) : (
-      propertyData.second_floor_map_image && (
-        <img src={`${propertyData.second_floor_map_image}`} alt="propertyImage" width={140} className='mb-6' />
-      )
-    )
-  ): null}
-</div>
-<div className="flex flex-col space-y-4">
-  <Upload
-    title="Upload sub image 1"
-    onFileUpload={(base64String) => handleFileUpload(base64String, 'sub_image_1')}
-    register={register}
-    fieldName="sub_image_1"
-  />
-  {propertyData ? propertyData.sub_image_1 &&(
-    uploadedImages.sub_image_1 ? (
-      <img src={`${uploadedImages.sub_image_1}`} alt="uploadedImage" width={140} className='mb-6' />
-    ) : (
-      propertyData.sub_image_1 && (
-        <img src={`${propertyData.sub_image_1}`} alt="propertyImage" width={140} className='mb-6' />
-      )
-    )
-  ): null}
-</div>
-<div className="flex flex-col space-y-4">
-  <Upload
-    title="Upload sub image 2"
-    onFileUpload={(base64String) => handleFileUpload(base64String, 'sub_image_2')}
-    register={register}
-    fieldName="sub_image_2"
-  />
-  {propertyData ? propertyData.sub_image_2 && (
-    uploadedImages.sub_image_2 ? (
-      <img src={`${uploadedImages.sub_image_2}`} alt="uploadedImage" width={140} className='mb-6' />
-    ) : (
-      propertyData.sub_image_2 && (
-        <img src={`${propertyData.sub_image_2}`} alt="propertyImage" width={140} className='mb-6' />
-      )
-    )
-  ) : null}
-</div>
-
+            <div className="flex flex-col space-y-4">
+              <Upload
+                title="Upload main image"
+                onFileUpload={(base64String) =>
+                  handleFileUpload(base64String, "main_image")
+                }
+                register={register}
+                fieldName="main_image"
+              />
+              {propertyData
+                ? propertyData.main_image &&
+                  (uploadedImages.main_image ? (
+                    <img
+                      src={`${uploadedImages.main_image}`}
+                      alt="uploadedImage"
+                      width={140}
+                      className="mb-6"
+                    />
+                  ) : (
+                    propertyData.main_image && (
+                      <img
+                        src={`${propertyData.main_image}`}
+                        alt="propertyImage"
+                        width={140}
+                        className="mb-6"
+                      />
+                    )
+                  ))
+                : null}
+            </div>
+            <div className="flex flex-col space-y-4">
+              <Upload
+                title="Upload first floor map image "
+                onFileUpload={(base64String) =>
+                  handleFileUpload(base64String, "first_floor_map_image")
+                }
+                register={register}
+                fieldName="first_floor_map_image"
+              />
+              {propertyData
+                ? propertyData.first_floor_map_image &&
+                  (uploadedImages.first_floor_map_image ? (
+                    <img
+                      src={`${uploadedImages.first_floor_map_image}`}
+                      alt="uploadedImage"
+                      width={140}
+                      className="mb-6"
+                    />
+                  ) : (
+                    propertyData.first_floor_map_image && (
+                      <img
+                        src={`${propertyData.first_floor_map_image}`}
+                        alt="propertyImage"
+                        width={140}
+                        className="mb-6"
+                      />
+                    )
+                  ))
+                : null}
+            </div>
+            <div className="flex flex-col space-y-4">
+              <Upload
+                title="Upload Second floor map image "
+                onFileUpload={(base64String) =>
+                  handleFileUpload(base64String, "second_floor_map_image")
+                }
+                register={register}
+                fieldName="second_floor_map_image"
+              />
+              {propertyData
+                ? propertyData.second_floor_map_image &&
+                  (uploadedImages.second_floor_map_image ? (
+                    <img
+                      src={`${uploadedImages.second_floor_map_image}`}
+                      alt="uploadedImage"
+                      width={140}
+                      className="mb-6"
+                    />
+                  ) : (
+                    propertyData.second_floor_map_image && (
+                      <img
+                        src={`${propertyData.second_floor_map_image}`}
+                        alt="propertyImage"
+                        width={140}
+                        className="mb-6"
+                      />
+                    )
+                  ))
+                : null}
+            </div>
+            <div className="flex flex-col space-y-4">
+              <Upload
+                title="Upload sub image 1"
+                onFileUpload={(base64String) =>
+                  handleFileUpload(base64String, "sub_image_1")
+                }
+                register={register}
+                fieldName="sub_image_1"
+              />
+              {propertyData
+                ? propertyData.sub_image_1 &&
+                  (uploadedImages.sub_image_1 ? (
+                    <img
+                      src={`${uploadedImages.sub_image_1}`}
+                      alt="uploadedImage"
+                      width={140}
+                      className="mb-6"
+                    />
+                  ) : (
+                    propertyData.sub_image_1 && (
+                      <img
+                        src={`${propertyData.sub_image_1}`}
+                        alt="propertyImage"
+                        width={140}
+                        className="mb-6"
+                      />
+                    )
+                  ))
+                : null}
+            </div>
+            <div className="flex flex-col space-y-4">
+              <Upload
+                title="Upload sub image 2"
+                onFileUpload={(base64String) =>
+                  handleFileUpload(base64String, "sub_image_2")
+                }
+                register={register}
+                fieldName="sub_image_2"
+              />
+              {propertyData
+                ? propertyData.sub_image_2 &&
+                  (uploadedImages.sub_image_2 ? (
+                    <img
+                      src={`${uploadedImages.sub_image_2}`}
+                      alt="uploadedImage"
+                      width={140}
+                      className="mb-6"
+                    />
+                  ) : (
+                    propertyData.sub_image_2 && (
+                      <img
+                        src={`${propertyData.sub_image_2}`}
+                        alt="propertyImage"
+                        width={140}
+                        className="mb-6"
+                      />
+                    )
+                  ))
+                : null}
+            </div>
           </div>
           <h1>Property Good Details</h1>
           <div className="grid grid-cols-3 gap-4 p-10">
@@ -450,25 +512,25 @@ const EditProperties = () => {
               register={register}
               fieldName={"has_window"}
               required={true}
-              label ="Has Window"
+              label="Has Window"
             />
             <Checkbox
               register={register}
               fieldName={"has_air_conditioners"}
               required={true}
-              label = "has Air Conditioners"
+              label="has Air Conditioners"
             />
             <Checkbox
               register={register}
               fieldName={"has_cable_tv"}
               required={true}
-              label = "Has Cable TV"
+              label="Has Cable TV"
             />
             <Checkbox
               register={register}
               fieldName={"has_fire_place"}
               required={true}
-              label= "Has fire place"
+              label="Has fire place"
             />
             <Checkbox
               register={register}
@@ -480,19 +542,19 @@ const EditProperties = () => {
               register={register}
               fieldName={"has_wifi"}
               required={true}
-              label = " has wifi"
+              label=" has wifi"
             />
             <Checkbox
               register={register}
               fieldName={"has_ventillation"}
               required={true}
-              label = " has Ventillation"
+              label=" has Ventillation"
             />
             <Checkbox
               register={register}
               fieldName={"has_garage"}
               required={true}
-              label = " has Garage"
+              label=" has Garage"
             />
             <Checkbox
               register={register}
@@ -504,13 +566,13 @@ const EditProperties = () => {
               register={register}
               fieldName={"has_parking"}
               required={true}
-              label = "Has Parking"
+              label="Has Parking"
             />
             <Checkbox
               register={register}
               fieldName={"has_garden"}
               required={true}
-              label = "Has Garden"
+              label="Has Garden"
             />
           </div>
           <h1>proeprty Nearby Details</h1>
@@ -534,7 +596,6 @@ const EditProperties = () => {
               fieldName={"hospital_distance"}
               required={true}
               title="hospital Distance"
-              
               type="text"
             />
             <InputDesign
@@ -580,13 +641,14 @@ const EditProperties = () => {
               type="text"
             />
           </div>
+          
           <div className="flex items-center w-full justify-center">
             <button
               type="submit"
               // onClick={() => handleSubmit(handleFormSubmit)()}
               className="bg-[#1ebbd7] py-2 px-44 rounded-lg text-white"
             >
-           {loading? "SUbmitting..." :  " Submit"}
+              {loading ? "loading..." : " Next"}
             </button>
           </div>
           {errors && Object.keys(errors).length > 0 && (

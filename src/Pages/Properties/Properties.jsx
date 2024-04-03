@@ -10,11 +10,13 @@ import refreshBtn from "../../assets/refresh.png";
 import { CSVLink, CSVDownload } from "react-csv";
 import Search from "../../components/Search";
 import { deleteProperties, updateProperties } from "../../api/api";
-
+import ReactPaginate from 'react-paginate';
 const Properties = () => {
   const [properties, setProperties] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false)
+  const [currentPage, setCurrentPage] = useState(0);
+  const [propertiessPerPage] = useState(10);
   const renderProperties = async () => {
     setLoading(true)
     try {
@@ -32,6 +34,15 @@ const Properties = () => {
   useEffect(() => {
     renderProperties();
   }, []);
+
+  const handlePageClick = ({ selected }) => {
+    setCurrentPage(selected);
+  };
+  const indexOfLastproperties = (currentPage + 1) * propertiessPerPage;
+  const indexOfFirstproperties = indexOfLastproperties - propertiessPerPage;
+  const currentpropertiess = properties.slice(indexOfFirstproperties, indexOfLastproperties);
+
+  const pageCount = Math.ceil(properties.length / propertiessPerPage);
   const handleRefresh = () => {
     setTimeout(() => {
       renderProperties();
@@ -109,13 +120,18 @@ const displayIndex = index + 1
   };
   const renderDownloadBtn = () => (
     <div className="flex space-x-4">
-      <CSVLink data={properties}>
-        <img src={downloadImg} alt="downlaod" />
+      <CSVLink 
+     
+      data={properties}>
+        <img src={downloadImg} alt="downlaod" title="downlaod" />
       </CSVLink>
       <button onClick={handleRefresh}>
-        <img src={refreshBtn} alt="refresh" />
+        <img src={refreshBtn} alt="refresh"
+        title="Refresh" />
       </button>
-      <Link to="/add_properties">Add New Property</Link>
+      <Link 
+      className="bg-[#1ebbd7] py-2 px-4 rounded-lg text-white"
+      to="/add_properties">Add New Property</Link>
     </div>
   );
   return (
@@ -124,7 +140,20 @@ const displayIndex = index + 1
       <SubNavbar downButton={renderDownloadBtn} />
       <Search handleSearch={handleSearch} />
      {loading? "loading...." :
+     <>
       <Table headers={header} data={properties} rowrender={rowRenderer} />
+      <ReactPaginate
+      previousLabel={"Previous"}
+      nextLabel={"Next"}
+      pageCount={pageCount}
+      marginPagesDisplayed={2}
+      pageRangeDisplayed={5}
+      onPageChange={handlePageClick}
+      containerClassName={"pagination"}
+      activeClassName={"active"}
+    />
+     
+     </>
      }
     </div>
   );
