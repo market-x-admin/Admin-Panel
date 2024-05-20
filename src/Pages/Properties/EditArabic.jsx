@@ -32,7 +32,7 @@ const EditArabic = () => {
   useEffect(()=>{
     const Data = JSON.parse(localStorage.getItem("engDataEdit"))
    
-    setPrevData(Data.arabic)
+    setPrevData(Data.turkish)
     setAllData(Data)
    
   },[])
@@ -65,21 +65,21 @@ const EditArabic = () => {
     setValue,
   } = useForm();
   const listing = [
-    { value: "يشتري", label: "يشتري" },
-    { value: "إيجار", label: "إيجار" },
-    { value: "أُوكَازيُون", label: "أُوكَازيُون" },
+    { value: "O satın alır", label: "O satın alır" },
+    { value: "kira", label: "kira" },
+    { value: "satış", label: "satış" },
   ];
   const catogery = [
-    { value: "منازل", label: "منازل" },
-    { value: "مشاعل", label: "مشاعل" },
+    { value: "Evler", label: "Evler" },
+    { value: "Meşaleler", label: "Meşaleler" },
   ];
   const Location = [
-    { value: "سلفيت", label: "سلفيت" },
-    { value: "نابلس", label: "نابلس" },
-    { value: "رام الله", label: "رام الله" },
-    { value: "تالكورم", label: "تالكورم" },
-    { value: "الخليل", label: "الخليل" },
-    { value: "بيت لحم", label: "بيت لحم" },
+    { value: "Salfit", label: "Salfit" },
+    { value: "Nablus", label: "Nablus" },
+    { value: "Ramallah", label: "Ramallah " },
+    { value: "Talkorum", label: "Talkorum" },
+    { value: "El Halil", label: "El Halil" },
+    { value: "Beytüllahim", label:"Beytüllahim" },
   ];
 
  
@@ -92,8 +92,8 @@ const EditArabic = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="p-4 flex flex-col w-full"
       >
-         <h1 className="text-2xl flex w-full items-center justify-center uppercase text-[#6b748c]">اضف جديد    
-         <span className="text-[#70bcd7] font-semibold ml-2">   ملكية</span></h1>
+         <h1 className="text-2xl flex w-full items-center justify-center uppercase text-[#6b748c]">Yeni ekle  
+         <span className="text-[#70bcd7] font-semibold ml-2">   Mülk</span></h1>
         <div className="grid grid-cols-3 gap-4 p-10">
           <InputDesign
             register={register}
@@ -257,7 +257,7 @@ const EditArabic = () => {
             title={arLabels.price}
             type="text"
           />
-          <InputDesign
+          {/* <InputDesign
             register={register}
             fieldName={"_360_url"}
             required={true}
@@ -277,9 +277,11 @@ const EditArabic = () => {
             required={true}
             title={arLabels.video_url}
             type="text"
-          />
+          /> */}
         </div>
-        <h1 className="text-2xl px-8">ملكية <span className="text-[#70bcd7] font-semibold">تفاصيل جيدة</span></h1>
+        <h1 className="text-2xl px-8">Mülk <span className="text-[#70bcd7] font-semibold">İyi ayrıntılar
+
+</span></h1>
         <div className="grid grid-cols-3 gap-4 p-10">
           <InputDesign
             register={register}
@@ -297,7 +299,7 @@ const EditArabic = () => {
           />
          
         </div>
-        <h1 className="text-2xl px-8">ملكية <span className="text-[#70bcd7] font-semibold">تفاصيل قريبة</span></h1>
+        <h1 className="text-2xl px-8">Mülk <span className="text-[#70bcd7] font-semibold"> Ayrıntıları kapat</span></h1>
         <div className="grid grid-cols-3 gap-4 p-10">
           <InputDesign
             register={register}
