@@ -26,7 +26,7 @@ const ArabicForm = () => {
     const onSubmit = async (data) => {
       console.log("formData", data);
   
-      const url = "https://api.beetkom.org/api/write/Properties";
+      const url = "https://api.marketx.site/api/write/Properties";
   
       setLoading(true);
  const EnglishData = prevData

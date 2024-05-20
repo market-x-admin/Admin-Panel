@@ -69,7 +69,7 @@ const EditProperties = () => {
       data.sub_image_2 = uploadedImages.sub_image_2;
     }
 
-    // const url = `https://api.beetkom.org/api/update/Properties/${id}`;
+    // const url = `https://api.marketx.site/api/update/Properties/${id}`;
 
     setLoading(true);
 

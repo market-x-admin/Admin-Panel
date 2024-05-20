@@ -39,7 +39,7 @@ const EditArabic = () => {
   const onSubmit = async (data) =>{
     console.log(data)
     setLoading(true);
-      const url = `http://16.170.205.35:3000/api/update/Properties/${id}`;
+      const url = `https://api.marketx.site/api/update/Properties/${id}`;
 
     const EnglishData = allData
     const newData = data
