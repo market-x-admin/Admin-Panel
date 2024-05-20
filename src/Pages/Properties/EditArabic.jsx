@@ -43,7 +43,7 @@ const EditArabic = () => {
 
     const EnglishData = allData
     const newData = data
-    EnglishData.arabic = newData
+    EnglishData.turkish = newData
     const sendData = EnglishData
       try {
         const response = await axios.put(url, sendData);

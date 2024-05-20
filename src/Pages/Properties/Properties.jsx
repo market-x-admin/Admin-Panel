@@ -23,7 +23,7 @@ const Properties = () => {
       const response = await getProperties();
 
       const propertiesData = response.data?.data;
-      console.log(propertiesData)
+      console.log("helo",propertiesData)
       setProperties(propertiesData);
     } catch (error) {
       console.error("Error fetching properties data:", error);
