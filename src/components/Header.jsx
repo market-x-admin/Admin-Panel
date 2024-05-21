@@ -18,7 +18,7 @@ const Users = () => {
           <img src={userImg} alt="user" />
           <div className="ml-6 mt-2">
             <p className="uppercase text-[#1ebbd7] font-semibold">admin</p>
-            <p className="text-gray-500">admin@beetkom.com</p>
+            <p className="text-gray-500">admin@marketx.site</p>
             <p onClick={handleLogout} className="text-gray-500 cursor-pointer	">
               Logout
             </p>
