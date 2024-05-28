@@ -46,21 +46,19 @@ const ArabicForm = () => {
     };
   
     const listing = [
-      { value: "يشتري", label: "يشتري" },
-      { value: "إيجار", label: "إيجار" },
-      { value: "أُوكَازيُون", label: "أُوكَازيُون" },
+      { value: "O satın alır", label: "O satın alır" },
+      { value: "kira", label: "kira" },
+      { value: "satış", label: "satış" },
     ];
     const catogery = [
-      { value: "منازل", label: "منازل" },
-      { value: "مشاعل", label: "مشاعل" },
+      { value: "Evler", label: "Evler" },
+      { value: "Meşaleler", label: "Meşaleler" },
     ];
     const Location = [
-      { value: "سلفيت", label: "سلفيت" },
-      { value: "نابلس", label: "نابلس" },
-      { value: "رام الله", label: "رام الله" },
-      { value: "تالكورم", label: "تالكورم" },
-      { value: "الخليل", label: "الخليل" },
-      { value: "بيت لحم", label: "بيت لحم" },
+      { value: "Lefkoşa", label: "Lefkoşa" },
+      { value: "Gazimağusa", label: "Gazimağusa" },
+      { value: "Girne ", label: " Girne" },
+     
     ];
  
    
@@ -78,8 +76,8 @@ const ArabicForm = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="p-4 flex flex-col w-full"
         >
-           <h1 className="text-2xl flex w-full items-center justify-center uppercase text-[#6b748c]">اضف جديد    
-           <span className="text-[#70bcd7] font-semibold ml-2">   ملكية</span></h1>
+          <h1 className="text-2xl flex w-full items-center justify-center uppercase text-[#6b748c]">Yeni ekle  
+         <span className="text-[#70bcd7] font-semibold ml-2">   Mülk</span></h1>
           <div className="grid grid-cols-3 gap-4 p-10">
             <InputDesign
               register={register}
@@ -101,34 +99,37 @@ const ArabicForm = () => {
               fieldName={"listing_type"}
               required={true}
               options={listing}
+              title={"listing"}
             />
             <SelectInputDesign
               register={register}
               fieldName={"location_area"}
               required={true}
               options={Location}
+              title={"Location"}
             />
             <SelectInputDesign
               register={register}
               fieldName={"category_type"}
               required={true}
+              title={"category"}
               options={catogery}
             />
            
-            <InputDesign
+            {/* <InputDesign
               register={register}
               fieldName={"contact_no"}
               required={true}
               title={arLabels.contact_no}
               type="text"
-            />
+            /> */}
              <textarea
             placeholder={arLabels.description}
             className="border outline-0 p-2"
              name="description" id="description" cols="30" rows="5" 
              {...register("description", { required: true })}
              />
-            <InputDesign
+            {/* <InputDesign
               register={register}
               fieldName={"size"}
               required={true}
@@ -155,7 +156,7 @@ const ArabicForm = () => {
               required={true}
               title={arLabels.security_camaras_count}
               type="text"
-            />
+            /> */}
             <InputDesign
               register={register}
               fieldName={"disabled_access_type"}
@@ -193,7 +194,7 @@ const ArabicForm = () => {
               type="text"
             />
            
-            <InputDesign
+            {/* <InputDesign
               register={register}
               fieldName={"revolution_date"}
               required={true}
@@ -207,14 +208,14 @@ const ArabicForm = () => {
               title={arLabels.ceiling_height}
               type="text"
             />
-           
-            <InputDesign
+            */}
+            {/* <InputDesign
               register={register}
               fieldName={"construction_year"}
               required={true}
               title={arLabels.construction_year}
               type="text"
-            />
+            /> */}
             <InputDesign
               register={register}
               fieldName={"address"}
@@ -222,13 +223,13 @@ const ArabicForm = () => {
               title={arLabels.address}
               type="text"
             />
-            <InputDesign
+            {/* <InputDesign
               register={register}
               fieldName={"rating_count"}
               required={true}
               title={arLabels.rating_count}
               type="text"
-            />
+            /> */}
             <InputDesign
               register={register}
               fieldName={"currency"}
@@ -236,17 +237,19 @@ const ArabicForm = () => {
               title={arLabels.currency}
               type="text"
             />
-            <InputDesign
+            {/* <InputDesign
               register={register}
               fieldName={"price"}
               required={true}
               title={arLabels.price}
               type="text"
-            />
+            /> */}
            
           
           </div>
-          <h1 className="text-2xl px-8">ملكية <span className="text-[#70bcd7] font-semibold">تفاصيل جيدة</span></h1>
+          <h1 className="text-2xl px-8">Mülk <span className="text-[#70bcd7] font-semibold">İyi ayrıntılar
+
+</span></h1>
           <div className="grid grid-cols-3 gap-4 p-10">
             <InputDesign
               register={register}
@@ -264,9 +267,9 @@ const ArabicForm = () => {
             />
            
           </div>
-          <h1 className="text-2xl px-8">ملكية <span className="text-[#70bcd7] font-semibold">تفاصيل قريبة</span></h1>
+          {/* <h1 className="text-2xl px-8">Mülk <span className="text-[#70bcd7] font-semibold"> Ayrıntıları kapat</span></h1> */}
           <div className="grid grid-cols-3 gap-4 p-10">
-            <InputDesign
+            {/* <InputDesign
               register={register}
               fieldName={"school_distance"}
               required={true}
@@ -328,7 +331,7 @@ const ArabicForm = () => {
               required={true}
               title={arLabels.wellness_distance}
               type="text"
-            />
+            /> */}
           </div>
           <div className="flex items-center w-full justify-center">
             <button

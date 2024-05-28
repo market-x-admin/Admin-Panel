@@ -74,12 +74,10 @@ const EditArabic = () => {
     { value: "Meşaleler", label: "Meşaleler" },
   ];
   const Location = [
-    { value: "Salfit", label: "Salfit" },
-    { value: "Nablus", label: "Nablus" },
-    { value: "Ramallah", label: "Ramallah " },
-    { value: "Talkorum", label: "Talkorum" },
-    { value: "El Halil", label: "El Halil" },
-    { value: "Beytüllahim", label:"Beytüllahim" },
+    { value: "Lefkoşa", label: "Lefkoşa" },
+    { value: "Gazimağusa", label: "Gazimağusa" },
+    { value: "Girne ", label: " Girne" },
+   
   ];
 
  
@@ -114,12 +112,15 @@ const EditArabic = () => {
             register={register}
             fieldName={"listing_type"}
             required={true}
+            title={"listing"}
             options={listing}
           />
           <SelectInputDesign
             register={register}
             fieldName={"location_area"}
             required={true}
+
+            title={"Location"}
             options={Location}
           />
           <SelectInputDesign
@@ -127,49 +128,18 @@ const EditArabic = () => {
             fieldName={"category_type"}
             required={true}
             options={catogery}
+            title={"category"}
           />
           
-          <InputDesign
-            register={register}
-            fieldName={"contact_no"}
-            required={true}
-            title={arLabels.contact_no}
-            type="text"
-          />
+        
             <textarea
             placeholder={arLabels.description}
             className="border outline-0 p-2"
              name="description" id="description" cols="30" rows="5" 
              {...register("description", { required: true })}
              />
-          <InputDesign
-            register={register}
-            fieldName={"size"}
-            required={true}
-            title={arLabels.size}
-            type="text"
-          />
-          <InputDesign
-            register={register}
-            fieldName={"bed_room_count"}
-            required={true}
-            title={arLabels.bed_room_count}
-            type="text"
-          />
-          <InputDesign
-            register={register}
-            fieldName={"bath_count"}
-            required={true}
-            title={arLabels.bath_count}
-            type="text"
-          />
-          <InputDesign
-            register={register}
-            fieldName={"security_camaras_count"}
-            required={true}
-            title={arLabels.security_camaras_count}
-            type="text"
-          />
+         
+         
           <InputDesign
             register={register}
             fieldName={"disabled_access_type"}
@@ -207,28 +177,10 @@ const EditArabic = () => {
             type="text"
           />
          
-          <InputDesign
-            register={register}
-            fieldName={"revolution_date"}
-            required={true}
-            title={arLabels.revolution_date}
-            type="text"
-          />
-          <InputDesign
-            register={register}
-            fieldName={"ceiling_height"}
-            required={true}
-            title={arLabels.ceiling_height}
-            type="text"
-          />
          
-          <InputDesign
-            register={register}
-            fieldName={"construction_year"}
-            required={true}
-            title={arLabels.construction_year}
-            type="text"
-          />
+        
+         
+         
           <InputDesign
             register={register}
             fieldName={"address"}
@@ -236,13 +188,7 @@ const EditArabic = () => {
             title={arLabels.address}
             type="text"
           />
-          <InputDesign
-            register={register}
-            fieldName={"rating_count"}
-            required={true}
-            title={arLabels.rating_count}
-            type="text"
-          />
+        
           <InputDesign
             register={register}
             fieldName={"currency"}
@@ -250,13 +196,7 @@ const EditArabic = () => {
             title={arLabels.currency}
             type="text"
           />
-          <InputDesign
-            register={register}
-            fieldName={"price"}
-            required={true}
-            title={arLabels.price}
-            type="text"
-          />
+       
           {/* <InputDesign
             register={register}
             fieldName={"_360_url"}
@@ -299,72 +239,7 @@ const EditArabic = () => {
           />
          
         </div>
-        <h1 className="text-2xl px-8">Mülk <span className="text-[#70bcd7] font-semibold"> Ayrıntıları kapat</span></h1>
-        <div className="grid grid-cols-3 gap-4 p-10">
-          <InputDesign
-            register={register}
-            fieldName={"school_distance"}
-            required={true}
-            title={arLabels.school_distance}
-            type="text"
-          />
-          <InputDesign
-            register={register}
-            fieldName={"university_distance"}
-            required={true}
-            title={arLabels.university_distance}
-            type="text"
-          />
-          <InputDesign
-            register={register}
-            fieldName={"hospital_distance"}
-            required={true}
-            title={arLabels.hospital_distance}
-            type="text"
-          />
-          <InputDesign
-            register={register}
-            fieldName={"metro_station_distance"}
-            required={true}
-            title={arLabels.metro_station_distance}
-            type="text"
-          />
-          <InputDesign
-            register={register}
-            fieldName={"grocery_center_distance"}
-            required={true}
-            title={arLabels.grocery_center_distance}
-            type="text"
-          />
-          <InputDesign
-            register={register}
-            fieldName={"market_distance"}
-            required={true}
-            title={arLabels.market_distance}
-            type="text"
-          />
-          <InputDesign
-            register={register}
-            fieldName={"gym_distance"}
-            required={true}
-            title={arLabels.gym_distance}
-            type="text"
-          />
-          <InputDesign
-            register={register}
-            fieldName={"river_distance"}
-            required={true}
-            title={arLabels.river_distance}
-            type="text"
-          />
-          <InputDesign
-            register={register}
-            fieldName={"wellness_distance"}
-            required={true}
-            title={arLabels.wellness_distance}
-            type="text"
-          />
-        </div>
+       
         <div className="flex items-center w-full justify-center">
           <button
             type="submit"

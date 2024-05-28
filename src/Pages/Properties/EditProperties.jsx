@@ -94,13 +94,11 @@ const EditProperties = () => {
     { value: "Houses", label: "Houses" },
     { value: "Flates", label: "Flates" },
   ];
-  const location = [
-    { value: "Salfeet", label: "Salfeet" },
-    { value: "Nablus", label: "Nablus" },
-    { value: "Ramallah", label: "Ramallah" },
-    { value: "Talkurm", label: "Talkurm" },
-    { value: "Hebron", label: "Hebron" },
-    { value: "Bethlehem", label: "Bethlehem" },
+  const Location = [
+    { value: "Nicosia", label: "Nicosia" },
+    { value: "Famagusta ", label: "Famagusta " },
+    { value: "Girne", label: "Girne" },
+  
   ];
   const handleFileUpload = (base64String, fieldName) => {
     console.log("Image base64 string:", base64String);
@@ -141,6 +139,7 @@ const EditProperties = () => {
               register={register}
               fieldName={"listing_type"}
               required={true}
+              title={"listing"}
               options={listing}
               value={propertyData ? propertyData?.listing_type : ""}
             />
@@ -150,13 +149,15 @@ const EditProperties = () => {
               fieldName={"category_type"}
               required={true}
               options={catogery}
+              title={"category"}
               value={propertyData ? propertyData.category_type : ""}
             />
             <SelectInputDesign
               register={register}
               fieldName={"location_area"}
               required={true}
-              options={location}
+              title={"Location"}
+              options={Location}
               value={propertyData ? propertyData.location_area : ""}
             />
            

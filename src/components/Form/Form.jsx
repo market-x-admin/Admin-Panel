@@ -62,12 +62,10 @@ const Form = () => {
     { value: "Flates", label: "Flates" },
   ];
   const Location = [
-    { value: "salfeet", label: "salfeet" },
-    { value: "nablus", label: "nablus" },
-    { value: "ramallah", label: "ramallah" },
-    { value: "Talkurm", label: "Talkurm" },
-    { value: "Hebron", label: "Hebron" },
-    { value: "bethlehem", label: "bethlehem" },
+    { value: "Nicosia", label: "Nicosia" },
+    { value: "Famagusta ", label: "Famagusta " },
+    { value: "Girne", label: "Girne" },
+  
   ];
 
   const handleFileUpload = (base64String, fieldName) => {
@@ -116,18 +114,21 @@ const Form = () => {
               register={register}
               fieldName={"listing_type"}
               required={true}
+              title={"listing"}
               options={listing}
             />
             <SelectInputDesign
               register={register}
               fieldName={"location_area"}
               required={true}
+              title={"Location"}
               options={Location}
             />
             <SelectInputDesign
               register={register}
               fieldName={"category_type"}
               required={true}
+              title={"category"}
               options={catogery}
             />
             
