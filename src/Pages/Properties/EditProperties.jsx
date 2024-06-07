@@ -10,6 +10,9 @@ import { getProperties } from "../../api/api";
 import Header from "../../components/Header";
 import { useParams } from "react-router-dom";
 import {arLabels} from "../../components/Form/arLabels"
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+  
 const EditProperties = () => {
   const { id, index } = useParams();
   const [loading, setLoading] = useState();
@@ -119,7 +122,7 @@ const EditProperties = () => {
           className="p-4 flex flex-col w-full"
         >
           <h1>Add New Property</h1>
-          <div className="grid grid-cols-3 gap-4 p-10">
+          <div className="flex flex-wrap justify-between gap-10">
             <InputDesign
               register={register}
               fieldName={"title"}
@@ -222,12 +225,7 @@ const EditProperties = () => {
               title="floor Type"
               type="text"
             />
-            <Checkbox
-              register={register}
-              fieldName={"is_floor_available"}
-              required={true}
-              label="is FLoor Availible"
-            />
+           
             <InputDesign
               register={register}
               fieldName={"additional_space_type"}
@@ -235,12 +233,7 @@ const EditProperties = () => {
               title="additional Space Type"
               type="text"
             />
-            <Checkbox
-              register={register}
-              fieldName={"is_additional_space"}
-              required={true}
-              label="Is aditional Space"
-            />
+           
             <InputDesign
               register={register}
               fieldName={"furnished_type"}
@@ -248,12 +241,7 @@ const EditProperties = () => {
               title="furnished Type"
               type="text"
             />
-            <Checkbox
-              register={register}
-              fieldName={"is_furnished"}
-              required={true}
-              label="Is furnished"
-            />
+          
             <InputDesign
               register={register}
               fieldName={"revolution_date"}
@@ -268,12 +256,7 @@ const EditProperties = () => {
               title="ceiling Height"
               type="text"
             />
-            <Checkbox
-              register={register}
-              fieldName={"is_ceiling"}
-              required={true}
-              label="Is ceiling"
-            />
+           
             <InputDesign
               register={register}
               fieldName={"construction_year"}
@@ -288,13 +271,7 @@ const EditProperties = () => {
               title="address"
               type="text"
             />
-            <InputDesign
-              register={register}
-              fieldName={"rating_count"}
-              required={true}
-              title="rating Count"
-              type="text"
-            />
+          
             <InputDesign
               register={register}
               fieldName={"currency"}
@@ -330,6 +307,34 @@ const EditProperties = () => {
               title="video Url"
               type="text"
             />
+              </div>
+            <div className=" flex flex-wrap gap-10 justify-between py-10">
+            <Checkbox
+              register={register}
+              fieldName={"is_ceiling"}
+              required={true}
+              label="Is ceiling"
+            />
+              <Checkbox
+              register={register}
+              fieldName={"is_furnished"}
+              required={true}
+              label="Is furnished"
+            />
+             <Checkbox
+              register={register}
+              fieldName={"is_additional_space"}
+              required={true}
+              label="Is aditional Space"
+            />
+             <Checkbox
+              register={register}
+              fieldName={"is_floor_available"}
+              required={true}
+              label="is FLoor Availible"
+            />
+            </div>
+            <div className=" flex flex-wrap  gap-10 my-10">
             <div className="flex flex-col space-y-4">
               <Upload
                 title="Upload main image"
@@ -337,6 +342,7 @@ const EditProperties = () => {
                   handleFileUpload(base64String, "main_image")
                 }
                 register={register}
+                required={false}
                 fieldName="main_image"
               />
               {propertyData
@@ -368,6 +374,7 @@ const EditProperties = () => {
                 }
                 register={register}
                 fieldName="first_floor_map_image"
+                required={false}
               />
               {propertyData
                 ? propertyData.first_floor_map_image &&
@@ -397,6 +404,7 @@ const EditProperties = () => {
                   handleFileUpload(base64String, "second_floor_map_image")
                 }
                 register={register}
+                required={false}
                 fieldName="second_floor_map_image"
               />
               {propertyData
@@ -428,6 +436,7 @@ const EditProperties = () => {
                 }
                 register={register}
                 fieldName="sub_image_1"
+                required={false}
               />
               {propertyData
                 ? propertyData.sub_image_1 &&
@@ -457,6 +466,7 @@ const EditProperties = () => {
                   handleFileUpload(base64String, "sub_image_2")
                 }
                 register={register}
+                required={false}
                 fieldName="sub_image_2"
               />
               {propertyData
@@ -480,7 +490,8 @@ const EditProperties = () => {
                   ))
                 : null}
             </div>
-          </div>
+            </div>
+        
           <h1>Property Good Details</h1>
           <div className="grid grid-cols-3 gap-4 p-10">
             <InputDesign

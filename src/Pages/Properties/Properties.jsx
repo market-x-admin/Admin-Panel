@@ -10,6 +10,7 @@ import refreshBtn from "../../assets/refresh.png";
 import { CSVLink, CSVDownload } from "react-csv";
 import Search from "../../components/Search";
 import { deleteProperties, updateProperties } from "../../api/api";
+import Loader from "../../Loader";
 import ReactPaginate from 'react-paginate';
 const Properties = () => {
   const [properties, setProperties] = useState([]);
@@ -139,7 +140,7 @@ const displayIndex = index + 1
       <Header />
       <SubNavbar downButton={renderDownloadBtn} />
       <Search handleSearch={handleSearch} />
-     {loading? "loading...." :
+     {loading? <Loader/> :
      <>
       <Table headers={header} data={properties} rowrender={rowRenderer} />
       <ReactPaginate

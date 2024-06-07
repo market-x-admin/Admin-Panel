@@ -8,6 +8,9 @@ import { arLabels } from './arLabels'
 import { useForm } from "react-hook-form";
 import axios from "axios"
 import {Link} from "react-router-dom"
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+  
 const ArabicForm = () => {
     const navigate = useNavigate();
     const [prevData, setPrevData] = useState({})
@@ -37,9 +40,13 @@ const ArabicForm = () => {
         const response = await axios.post(url, sendData);
   
         console.log("Success:", response.data);
+        toast.success("Property Added Successfully")
+       setTimeout(()=>{
         navigate("/properties");
+       },2000)
       } catch (error) {
-        console.error("Error:", error);
+        console.error("Error:", error); 
+        toast.warn("Error", error)
       } finally {
         setLoading(false);
       }
@@ -223,13 +230,7 @@ const ArabicForm = () => {
               title={arLabels.address}
               type="text"
             />
-            {/* <InputDesign
-              register={register}
-              fieldName={"rating_count"}
-              required={true}
-              title={arLabels.rating_count}
-              type="text"
-            /> */}
+         
             <InputDesign
               register={register}
               fieldName={"currency"}
@@ -349,7 +350,7 @@ const ArabicForm = () => {
             </div>
           )}
         </form>
-         
+         <ToastContainer/>
             </div>
             </>
         )

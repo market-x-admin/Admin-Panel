@@ -8,7 +8,11 @@ import axios from "axios";
 import { useForm } from "react-hook-form";
 import Header from "../Header"
 import { addDataApi } from "../../api/api";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+  
 import {Link} from "react-router-dom"
+
 const Form = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -94,7 +98,7 @@ const Form = () => {
           <h1 className="text-2xl flex w-full items-center justify-center uppercase text-[#6b748c]">Add New    
            <span className="text-[#70bcd7] font-semibold ml-2">   Property</span></h1>
           <div className=" p-10">
-           <div className="grid grid-cols-3 gap-4">
+           <div className="flex flex-wrap justify-between gap-10">
            <InputDesign
               register={register}
               fieldName={"title"}
@@ -237,13 +241,7 @@ const Form = () => {
               title="address"
               type="text"
             />
-            <InputDesign
-              register={register}
-              fieldName={"rating_count"}
-              required={true}
-              title="rating Count"
-              type="text"
-            />
+           
             <InputDesign
               register={register}
               fieldName={"currency"}
@@ -310,15 +308,17 @@ const Form = () => {
             />
            
           </div>
-            <div className="grid grid-cols-3 gap-7">
+            <div className=" flex flex-wrap  gap-10">
             <div className="flex flex-col space-y-4">
               <Upload
                 title="main image"
                 onFileUpload={(base64String) =>
                   handleFileUpload(base64String, "main_image")
+
                 }
                 register={register}
                 fieldName="main_image"
+                required={true}
               />
               {uploadedImages.main_image && (
                 <img
@@ -338,6 +338,7 @@ const Form = () => {
                 }
                 register={register}
                 fieldName="first_floor_map_image"
+                required={true}
               />
               {uploadedImages.first_floor_map_image && (
                 <img
@@ -356,6 +357,7 @@ const Form = () => {
                 }
                 register={register}
                 fieldName="second_floor_map_image"
+                required={true}
               />
               {uploadedImages.second_floor_map_image && (
                 <img
@@ -375,6 +377,7 @@ const Form = () => {
                 }
                 register={register}
                 fieldName="sub_image_1"
+                required={true}
               />
               {uploadedImages.sub_image_1 && (
                 <img
@@ -393,6 +396,7 @@ const Form = () => {
                 }
                 register={register}
                 fieldName="sub_image_2"
+                required={true}
               />
               {uploadedImages.sub_image_2 && (
                 <img

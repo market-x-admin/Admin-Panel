@@ -9,6 +9,7 @@ import downloadImg from "../../assets/download.png";
 import refreshBtn from "../../assets/refresh.png";
 import Search from "../../components/Search";
 import ReactPaginate from 'react-paginate';
+import Loader from "../../Loader";
 import "./user.css"
 const UserData = () => {
   const [user, setUser] = useState([]);
@@ -119,7 +120,7 @@ const displayIndex = index + 1
 
       <SubNavbar downButton={renderDownloadBtn} />
       <Search handleSearch={handleSearch} />
-      {loading? "Loading...." :
+      {loading? <Loader/> :
         <>
         <Table headers={header} data={currentUsers} rowrender={rowRenderer} />
         <ReactPaginate

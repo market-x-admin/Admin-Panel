@@ -5,6 +5,7 @@ import { reviewsHead as header } from "../../components/data";
 import { GetReviews } from "../../api/api";
 import { useParams } from "react-router-dom";
 import Search from "../../components/Search";
+import Loader from "../../Loader";
 
 const Reviews = () => {
   const [reviews, setReviews] = useState([]);
@@ -73,7 +74,7 @@ const Reviews = () => {
       <Header />
       <Search handleSearch={handleSearch} />
       {loading ? (
-        "loading..."
+       <Loader/>
       ) : reviews && reviews.length > 0 ? (
         <div className="w-full p-20">
           {reviews.map((review, index) => (
@@ -88,9 +89,9 @@ const Reviews = () => {
           ))}
         </div>
       ) : (
-        <>
+        <div className="flex items-center justify-center text-2xl">
           No reviews found
-        </>
+        </div>
       )}
     </div>
   );

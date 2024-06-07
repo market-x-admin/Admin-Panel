@@ -8,6 +8,9 @@ import { arLabels } from '../../components/Form/arLabels';
 import { useForm } from "react-hook-form";
 import axios from "axios"
 import { useParams } from 'react-router-dom';
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+  
 const EditArabic = () => {
   const {id, index} = useParams()
   const navigate = useNavigate();
@@ -48,9 +51,13 @@ const EditArabic = () => {
       try {
         const response = await axios.put(url, sendData);
         console.log("Success:", response.data);
+        toast.success("Property Edited Successfully")
+       setTimeout(()=>{
         navigate("/properties");
+       },2000)
       } catch (error) {
         console.error("Error:", error); 
+        toast.warn("Error", error)
     }finally{
       setLoading(false)
     }
@@ -256,7 +263,7 @@ const EditArabic = () => {
           </div>
         )}
       </form>
-       
+       <ToastContainer/>
           </div>
           </>
       )
