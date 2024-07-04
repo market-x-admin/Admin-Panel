@@ -87,7 +87,10 @@ const EditArabic = () => {
    
   ];
 
- 
+  const wordCountValidator = value => {
+    const wordCount = value.trim().split(/\s+/).length;
+    return wordCount <= 1000 || "You cannot exceed 1000 words";
+  };
       return (
         <>
         <Header/>
@@ -139,13 +142,7 @@ const EditArabic = () => {
           />
           
         
-            <textarea
-            placeholder={arLabels.description}
-            className="border outline-0 p-2"
-             name="description" id="description" cols="30" rows="5" 
-             {...register("description", { required: true })}
-             />
-         
+           
          
           <InputDesign
             register={register}
@@ -246,7 +243,22 @@ const EditArabic = () => {
           />
          
         </div>
-       
+        <div className="py-10 w-full px-10 flex items-start flex-col ">
+          <label className=" " htmlFor="description">{arLabels?.description}</label>
+         <textarea
+        placeholder={arLabels?.description}
+        className="border outline-0 p-2 rounded w-[900px]"
+        name="description"
+        id="description"
+        cols="30"
+        rows="5"
+        {...register("description", {
+          required: "This field is required",
+          validate: wordCountValidator
+        })}
+      />
+         </div>
+      {errors.description && <p className="text-red-500">{errors.description.message}</p>}
         <div className="flex items-center w-full justify-center">
           <button
             type="submit"

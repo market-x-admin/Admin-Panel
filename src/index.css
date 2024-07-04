@@ -7,3 +7,19 @@ body{
     font-family: 'poppins';
    
 }
+input[type=file] { display: none; }
+label[for=file] {
+	display: grid;
+	grid-auto-flow: column;
+	grid-gap: .5em;
+	justify-items: center;
+	align-content: center;
+	color: #E91E63;
+	border: .2em solid #E91E63;
+	background: hsl(0 0 0/0);
+	padding: .85em 1.5em;
+	color: #E91E63;
+	border-radius: 2em;
+	transition: 1s;
+	
+}
