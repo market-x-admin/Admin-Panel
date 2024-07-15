@@ -7,7 +7,7 @@ body{
     font-family: 'poppins';
    
 }
-input[type=file] { display: none; }
+/* input[type=file] { display: none; }
 label[for=file] {
 	display: grid;
 	grid-auto-flow: column;
@@ -22,4 +22,4 @@ label[for=file] {
 	border-radius: 2em;
 	transition: 1s;
 	
-}
+} */
