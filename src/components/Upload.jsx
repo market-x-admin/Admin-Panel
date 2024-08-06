@@ -28,14 +28,14 @@ const Upload = ({ title, onFileUpload, register, fieldName, required }) => {
   return (
     <div className="my-10">
       <p className="mb-2">{title}</p>
-    <div className=" border w-full h-[100px] bg-secondary  flex items-center justify-center ">
+    <div className="  w-full h-[100px] bg-secondary  flex items-center justify-center ">
      
       <label
         className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
         htmlFor="file_input"
       >
        
-         <IoCloudUploadOutline className="text-4xl text-primary w-full cursor-pointer"/>
+        
       </label>
       <input
          {...register(fieldName, { required:  required})}
