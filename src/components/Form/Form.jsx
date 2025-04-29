@@ -32,24 +32,40 @@ const Form = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log("formData", data);
-    data.media = MultiImages
-    data.main_image = uploadedImages.main_image;
-    data.first_floor_map_image = uploadedImages.first_floor_map_image;
-    data.second_floor_map_image = uploadedImages.second_floor_map_image;
-    data.sub_image_1 = uploadedImages.sub_image_1;
-    data.sub_image_2 = uploadedImages.sub_image_2;
-    data.second_floor_map_image = uploadedImages.second_floor_map_image;
-    const url = "http://16.170.205.35:3001/api/write/Properties";
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      if (value !== "") {
+        formData.append(key, value);
+      }
+    });
+    // console.log("formData", data);
+     // 3. Append single images (uploadedImages)
+     if (uploadedImages.main_image?.file) {
+      formData.append("main_image", uploadedImages.main_image.file);
+    }
+    if (uploadedImages.first_floor_map_image?.file) {
+      formData.append("first_floor_map_image", uploadedImages.first_floor_map_image.file);
+    }
+    if (uploadedImages.second_floor_map_image?.file) {
+      formData.append("second_floor_map_image", uploadedImages.second_floor_map_image.file);
+    }
+    if (uploadedImages.sub_image_1?.file) {
+      formData.append("sub_image_1", uploadedImages.sub_image_1.file);
+    }
+    if (uploadedImages.sub_image_2?.file) {
+      formData.append("sub_image_2", uploadedImages.sub_image_2.file);
+    }
+  
+    const url = "https://api.marketx.site/api/write/Properties";
 
     setLoading(true);
 
     try {
      
-      localStorage.setItem("engData", JSON.stringify(data));
+    const response = await axios.post(url, formData)
 
-      console.log("Success:", data);
-    navigate("/add-property-ar")
+      console.log("Success:", response?.data);
+    // navigate("/add-property-ar")
     } catch (error) {
       console.error("Error:", error);
     } finally {
@@ -78,15 +94,22 @@ const Form = () => {
     const imageSrc =`data:image/jpeg;base64,${base64String}`;
     setMultiImages((prevImages) => [...prevImages, imageSrc]);
   };
-  const handleFileUpload = (base64String, fieldName) => {
-    console.log("Image base64 string:", base64String);
-
-    // Update the state with the base64 string for the corresponding image field
+  const handleFileUpload = (formData, fieldName) => {
+    const file = formData.get(fieldName);
+  
+    console.log("Uploaded File for field:", fieldName, file);
+  
+    const previewURL = URL.createObjectURL(file); // for showing preview
+  
     setUploadedImages((prevImages) => ({
       ...prevImages,
-      [fieldName]: `data:image/jpeg;base64,${base64String}`,
+      [fieldName]: {
+        file, // the real file
+        previewURL, // the preview url
+      },
     }));
   };
+  
   const wordCountValidator = value => {
     const wordCount = value.trim().split(/\s+/).length;
     return wordCount <= 1000 || "You cannot exceed 1000 words";
@@ -522,21 +545,19 @@ errors={errors}
           <div className=" flex flex-wrap justify-between  p-10">
             <div className=" flex gap-6">
             <div className="flex flex-col space-y-4">
-              <Upload
-                title="main image"
-                onFileUpload={(base64String) =>
-                  handleFileUpload(base64String, "main_image")
+            <Upload
+  title="Main Image"
+  onFileUpload={(formData) => handleFileUpload(formData, "main_image")}
 
-                }
-                register={register}
-                fieldName="main_image"
-                required={true}
-              />
+  fieldName="main_image"
+
+/>
+
               {uploadedImages.main_image && (
                 <img
-                  src={`${uploadedImages.main_image}`}
+                  src={`${uploadedImages.main_image.previewURL}`}
                   alt="uploadedImage"
-                  width={140}
+                  width={100}
                   className="mb-6"
                 />
               )}
@@ -547,18 +568,17 @@ errors={errors}
             <div className="flex flex-col space-y-4">
               <Upload
                 title="sub image 1"
-                onFileUpload={(base64String) =>
-                  handleFileUpload(base64String, "sub_image_1")
+                onFileUpload={(formData) => handleFileUpload(formData, "sub_image_1")
                 }
-                register={register}
+               
                 fieldName="sub_image_1"
-                required={true}
+           
               />
               {uploadedImages.sub_image_1 && (
                 <img
-                  src={`${uploadedImages.sub_image_1}`}
+                  src={`${uploadedImages.sub_image_1.previewURL}`}
                   alt="uploadedImage"
-                  width={140}
+                  width={100}
                   className="mb-6"
                 />
               )}
@@ -566,18 +586,17 @@ errors={errors}
             <div className="flex flex-col space-y-4">
               <Upload
                 title="sub image 2"
-                onFileUpload={(base64String) =>
-                  handleFileUpload(base64String, "sub_image_2")
+                onFileUpload={(formData) => handleFileUpload(formData, "sub_image_2")
                 }
-                register={register}
+          x
                 fieldName="sub_image_2"
-                required={true}
+        
               />
               {uploadedImages.sub_image_2 && (
                 <img
-                  src={`${uploadedImages.sub_image_2}`}
+                  src={`${uploadedImages.sub_image_2.previewURL}`}
                   alt="uploadedImage"
-                  width={140}
+                  width={100}
                   className="mb-6"
                 />
               )}
@@ -589,18 +608,17 @@ errors={errors}
           <div className="flex flex-col space-y-4">
               <Upload
                 title="first floor map image"
-                onFileUpload={(base64String) =>
-                  handleFileUpload(base64String, "first_floor_map_image")
+                onFileUpload={(formData) => handleFileUpload(formData, "first_floor_map_image")
                 }
-                register={register}
+              
                 fieldName="first_floor_map_image"
-                required={true}
+               
               />
               {uploadedImages.first_floor_map_image && (
                 <img
-                  src={`${uploadedImages.first_floor_map_image}`}
+                  src={`${uploadedImages.first_floor_map_image.previewURL}`}
                   alt="uploadedImage"
-                  width={140}
+                  width={100}
                   className="mb-6"
                 />
               )}
@@ -608,18 +626,17 @@ errors={errors}
             <div className="flex flex-col space-y-4">
               <Upload
                 title="second_floor_map_image"
-                onFileUpload={(base64String) =>
-                  handleFileUpload(base64String, "second_floor_map_image")
+                onFileUpload={(formData) => handleFileUpload(formData, "second_floor_map_image")
                 }
-                register={register}
+              
                 fieldName="second_floor_map_image"
-                required={true}
+              
               />
               {uploadedImages.second_floor_map_image && (
                 <img
-                  src={`${uploadedImages.second_floor_map_image}`}
+                  src={`${uploadedImages.second_floor_map_image?.previewURL}`}
                   alt="uploadedImage"
-                  width={140}
+                  width={100}
                   className="mb-6"
                 />
               )}
@@ -641,12 +658,12 @@ errors={errors}
       ) : null} 
            </div>
            <div>
-           <UploadMulti
+           {/* <UploadMulti
         title="Upload Media"
         onFileUpload={handleFileUploadMulti}
-        register={register}
+    register={register}
         fieldName="media"
-      />
+      /> */}
            </div>
 </div>
           <div className="flex items-center w-full justify-center">

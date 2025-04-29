@@ -2,49 +2,39 @@ import React, { useState } from "react";
 import { IoCloudUploadOutline } from "react-icons/io5";
 
 const Upload = ({ title, onFileUpload, register, fieldName, required }) => {
-  const [selectedImage, setSelectedImage] = useState(null); // Store selected image data
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const handleFileChange = async (e) => {
     const selectedFile = e.target.files[0];
 
     if (selectedFile) {
-      try {
-       
-        const reader = new FileReader();
-        reader.onload = () => {
-          const base64String = reader.result.split(",")[1];
-      
-          setSelectedImage({ base64String, file: selectedFile });
-       
-          onFileUpload(base64String);
-        };
-        reader.readAsDataURL(selectedFile);
-      } catch (error) {
-        console.error("Error processing image:", error);
-      }
+      const formData = new FormData();
+      formData.append(fieldName, selectedFile); // dynamic name
+
+      setSelectedImage(URL.createObjectURL(selectedFile)); // For preview if needed
+      onFileUpload(formData);
     }
   };
 
   return (
-    <div className="my-10">
-      <p className="mb-2">{title}</p>
-    <div className="  w-full h-[100px] bg-secondary  flex items-center justify-center ">
-     
+    <div className="my-6">
+      <p className="mb-2 text-sm font-semibold text-gray-700">{title}</p>
       <label
-        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-        htmlFor="file_input"
+        htmlFor={fieldName}
+        className="flex flex-col items-center justify-center w-full h-[120px]  rounded-lg cursor-pointer "
       >
-       
+        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+          <IoCloudUploadOutline size={30} className="text-gray-400" />
+          <p className="text-xs text-gray-500 mt-2">Click to upload</p>
+        </div>
+        <input
         
+          id={fieldName}
+          type="file"
+          className="hidden"
+          onChange={handleFileChange}
+        />
       </label>
-      <input
-         {...register(fieldName, { required:  required})}
-        className="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-        id="file_input"
-        type="file"
-        onChange={handleFileChange}
-      />
-    </div>
     </div>
   );
 };
