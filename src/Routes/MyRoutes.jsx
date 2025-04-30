@@ -18,7 +18,7 @@ export default function MyRoutes(){
             <Route path="/reviews/:id" element={<Reviews/>}/>
             <Route path="/" element={<Login/>}/>
             <Route path="/add_properties" element={<Form/>}/>
-            <Route path="/add-property-ar" element={<ArabicForm/>}/>
+            <Route path="/add-property-ar/:id" element={<ArabicForm/>}/>
           
             <Route path="/edit_properties/:index/:id" element={<EditProperties/>}/>
             <Route path="/edit_properties_ar/:index/:id" element={<EditArabic/>}/>

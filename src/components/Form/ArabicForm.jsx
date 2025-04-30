@@ -10,10 +10,11 @@ import axios from "axios"
 import {Link} from "react-router-dom"
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-  
+  import { useParams } from 'react-router-dom';
 const ArabicForm = () => {
+    const {id} = useParams()
     const navigate = useNavigate();
-    const [prevData, setPrevData] = useState({})
+
     const [loading, setLoading] = useState(false);
    
     const {
@@ -22,25 +23,22 @@ const ArabicForm = () => {
       formState: { errors },
       setValue,
     } = useForm();
-    useEffect(()=>{
-      const Data = JSON.parse(localStorage.getItem("engData"))
-      setPrevData(Data)
-    },[])
+   
     const onSubmit = async (data) => {
-      console.log("formData", data);
+      const payload = {
+        turkish : {...data},
+      }
   
-      const url = "https://api.marketx.site/api/write/Properties";
+            const url = `https://api.marketx.site/api/update/Properties/${id}`;
+
   
       setLoading(true);
- const EnglishData = prevData
- const newData = data
- EnglishData.turkish = newData
- const sendData = EnglishData
+ 
       try {
-        const response = await axios.post(url, sendData);
+        const response = await axios.put(url, payload);
   
         console.log("Success:", response.data);
-        toast.success("Property Added Successfully")
+        toast.success("Property Updated Successfully")
        setTimeout(()=>{
         navigate("/properties");
        },2000)

@@ -55,7 +55,11 @@ const Form = () => {
     if (uploadedImages.sub_image_2?.file) {
       formData.append("sub_image_2", uploadedImages.sub_image_2.file);
     }
-  
+   if(MultiImages.length > 0){
+      MultiImages.forEach((file) => {
+        formData.append("media", file); // Append each file to formData
+      });
+    }
     const url = "https://api.marketx.site/api/write/Properties";
 
     setLoading(true);
@@ -65,7 +69,7 @@ const Form = () => {
     const response = await axios.post(url, formData)
 
       console.log("Success:", response?.data);
-    // navigate("/add-property-ar")
+    navigate(`/add-property-ar/${response?.data?.data?.id}`);
     } catch (error) {
       console.error("Error:", error);
     } finally {
@@ -88,11 +92,10 @@ const Form = () => {
     { value: "Girne", label: "Girne" },
   
   ];
-  const handleFileUploadMulti = (base64String) => {
+  const handleFileUploadMulti = (files) => {
     
-    console.log("Image base64 string:", base64String);
-    const imageSrc =`data:image/jpeg;base64,${base64String}`;
-    setMultiImages((prevImages) => [...prevImages, imageSrc]);
+   
+    setMultiImages([...MultiImages, ...files]);
   };
   const handleFileUpload = (formData, fieldName) => {
     const file = formData.get(fieldName);
@@ -644,28 +647,14 @@ errors={errors}
           </div>
           </div>
          
-          <div className="flex gap-2 justify-between">
-           <div className="flex gap-3 flex-wrap w-1/2">
-          
-         {MultiImages? (
-        <div className='flex space-x-2'>
-       {MultiImages.map((img, id)=>(
-         <div key={id} >
-          <img src={`${img.trim()}`} alt="uploadedImage" width={200} className='mb-6' />
-         </div>
-       ))}
-    </div>
-      ) : null} 
+         <div>
+           <UploadMulti
+        
+        onImagesChange={handleFileUploadMulti}
+   
+       
+      />
            </div>
-           <div>
-           {/* <UploadMulti
-        title="Upload Media"
-        onFileUpload={handleFileUploadMulti}
-    register={register}
-        fieldName="media"
-      /> */}
-           </div>
-</div>
           <div className="flex items-center w-full justify-center">
             <button
               type="submit"
