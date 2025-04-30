@@ -571,10 +571,8 @@ errors={errors}
             <div className="flex flex-col space-y-4">
               <Upload
                 title="Upload main image"
-                onFileUpload={(base64String) =>
-                  handleFileUpload(base64String, "main_image")
-                }
-                register={register}
+                 onFileUpload={(formData) => handleFileUpload(formData, "main_image")}
+                
                 required={false}
                 fieldName="main_image"
               />
@@ -582,7 +580,7 @@ errors={errors}
                 ? propertyData.main_image &&
                   (uploadedImages.main_image ? (
                     <img
-                      src={`${uploadedImages.main_image}`}
+                      src={`https://api.marketx.site/${uploadedImages.main_image}`}
                       alt="uploadedImage"
                       width={140}
                       className="mb-6"
@@ -590,7 +588,7 @@ errors={errors}
                   ) : (
                     propertyData.main_image && (
                       <img
-                        src={`${propertyData.main_image}`}
+                        src={`https://api.marketx.site/${propertyData.main_image}`}
                         alt="propertyImage"
                         width={140}
                         className="mb-6"
@@ -614,7 +612,7 @@ errors={errors}
                 ? propertyData.sub_image_1 &&
                   (uploadedImages.sub_image_1 ? (
                     <img
-                      src={`${uploadedImages.sub_image_1}`}
+                      src={`https://api.marketx.site/${uploadedImages.sub_image_1}`}
                       alt="uploadedImage"
                       width={140}
                       className="mb-6"
@@ -622,7 +620,7 @@ errors={errors}
                   ) : (
                     propertyData.sub_image_1 && (
                       <img
-                        src={`${propertyData.sub_image_1}`}
+                        src={`https://api.marketx.site/${propertyData.sub_image_1}`}
                         alt="propertyImage"
                         width={140}
                         className="mb-6"
@@ -645,7 +643,7 @@ errors={errors}
                 ? propertyData.sub_image_2 &&
                   (uploadedImages.sub_image_2 ? (
                     <img
-                      src={`${uploadedImages.sub_image_2}`}
+                      src={`https://api.marketx.site/${uploadedImages.sub_image_2}`}
                       alt="uploadedImage"
                       width={140}
                       className="mb-6"
@@ -653,7 +651,7 @@ errors={errors}
                   ) : (
                     propertyData.sub_image_2 && (
                       <img
-                        src={`${propertyData.sub_image_2}`}
+                        src={`https://api.marketx.site/${propertyData.sub_image_2}`}
                         alt="propertyImage"
                         width={140}
                         className="mb-6"
@@ -678,7 +676,7 @@ errors={errors}
                 ? propertyData.first_floor_map_image &&
                   (uploadedImages.first_floor_map_image ? (
                     <img
-                      src={`${uploadedImages.first_floor_map_image}`}
+                      src={`https://api.marketx.site/${uploadedImages.first_floor_map_image}`}
                       alt="uploadedImage"
                       width={140}
                       className="mb-6"
@@ -686,7 +684,7 @@ errors={errors}
                   ) : (
                     propertyData.first_floor_map_image && (
                       <img
-                        src={`${propertyData.first_floor_map_image}`}
+                        src={`https://api.marketx.site/${propertyData.first_floor_map_image}`}
                         alt="propertyImage"
                         width={140}
                         className="mb-6"
@@ -709,7 +707,7 @@ errors={errors}
                 ? propertyData.second_floor_map_image &&
                   (uploadedImages.second_floor_map_image ? (
                     <img
-                      src={`${uploadedImages.second_floor_map_image}`}
+                      src={`https://api.marketx.site/${uploadedImages.second_floor_map_image}`}
                       alt="uploadedImage"
                       width={140}
                       className="mb-6"
@@ -717,7 +715,7 @@ errors={errors}
                   ) : (
                     propertyData.second_floor_map_image && (
                       <img
-                        src={`${propertyData.second_floor_map_image}`}
+                        src={`https://api.marketx.site/${propertyData.second_floor_map_image}`}
                         alt="propertyImage"
                         width={140}
                         className="mb-6"
@@ -730,7 +728,7 @@ errors={errors}
             </div>
             <div className="flex gap-2 justify-between">
            <div className="flex gap-3 flex-wrap w-1/2">
-           {propertyData?.media?.map((img, index) => (
+           {/* {propertyData?.media?.map((img, index) => (
           <div key={index} className="relative">
             <img src={img} alt={`Image ${index + 1}`} width={200} />
             <p
@@ -740,8 +738,8 @@ errors={errors}
               <IoCloseCircleSharp/>
             </p>
           </div>
-        ))} 
-         {MultiImages? (
+        ))}  */}
+         {/* {MultiImages? (
         <div className='flex space-x-2'>
        {MultiImages.map((img, id)=>(
          <div key={id} >
@@ -749,16 +747,16 @@ errors={errors}
          </div>
        ))}
     </div>
-      ) : null} 
+      ) : null}  */}
            </div>
-           <div>
+           {/* <div>
            <UploadMulti
         title="Upload Media"
         onFileUpload={handleFileUploadMulti}
         register={register}
         fieldName="media"
       />
-           </div>
+           </div> */}
 </div>
 
        
