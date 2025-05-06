@@ -20,7 +20,7 @@ const UploadMulti = ({ onImagesChange, defaultImages }) => {
   };
 
   return (
-    <div className="w-full mb-10">
+    <div className="w-full mt-10 mb-4">
       <h2 className="text-xl font-semibold text-gray-800 my-3">Upload Media</h2>
 
       {/* Upload box */}

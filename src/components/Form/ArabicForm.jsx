@@ -28,7 +28,7 @@ const ArabicForm = () => {
        const formData = new FormData()
     formData.append("turkish", JSON.stringify([data])); // ✅ stringify the array
     
-      const url = `https://5hwtmvdt-8080.inc1.devtunnels.ms/api/update/Properties/${id}`;
+      const url = `https://api.marketx.site/api/update/Properties/${id}`;
 
   
       setLoading(true);

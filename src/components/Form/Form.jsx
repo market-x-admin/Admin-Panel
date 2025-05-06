@@ -60,7 +60,7 @@ const Form = () => {
         formData.append("media", file); // Append each file to formData
       });
     }
-    const url = "https://5hwtmvdt-8080.inc1.devtunnels.ms/api/write/Properties";
+    const url = "https://api.marketx.site/api/write/Properties";
 
     setLoading(true);
 

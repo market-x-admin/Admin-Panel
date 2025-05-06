@@ -97,7 +97,7 @@ Object.entries(data).forEach(([key, value]) => {
     }
    
 
-     const url = `https://5hwtmvdt-8080.inc1.devtunnels.ms/api/update/Properties/${id}`;
+     const url = `https://api.marketx.site/api/update/Properties/${id}`;
     setLoading(true);
 
     try {
@@ -787,7 +787,7 @@ errors={errors}
            <div className="flex gap-3 flex-wrap w-1/2">
         
            </div>
-          
+         
             <div>
                      <UploadMulti
                   
@@ -795,11 +795,12 @@ errors={errors}
              
                  
                 />
+                 <p className=" text-sm">While Editing you will have to add all images again</p> 
+</div>
+ 
 </div>
 
-</div>
-
-       
+     
        
          
           <div className="flex items-center w-full justify-center">

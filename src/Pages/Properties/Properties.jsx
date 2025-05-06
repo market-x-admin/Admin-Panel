@@ -49,18 +49,24 @@ const Properties = () => {
       renderProperties();
     }, 500);
   };
-  const handleDelete = async (userId) => {
-    setLoading(true)
-    try {
-      await deleteProperties(userId);
-      renderProperties()
-      console.log("User deleted successfully");
-    } catch (error) {
-      console.error("Error deleting user:", error);
-    }finally{
-      setLoading(false)
-    }
-  };
+ const handleDelete = async (userId) => {
+  const confirmed = window.confirm("Are you sure you want to delete this Property?");
+  if (!confirmed) return;
+
+  setLoading(true);
+  try {
+    await deleteProperties(userId);
+    renderProperties();
+    alert("Property deleted successfully");
+    console.log("Property deleted successfully");
+  } catch (error) {
+    alert("Error deleting property");
+    console.error("Error deleting property:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const rowRenderer = (product, index) => {
     const { id, title, created_on } = product;
