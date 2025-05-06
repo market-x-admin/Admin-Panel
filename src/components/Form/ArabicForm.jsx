@@ -25,17 +25,16 @@ const ArabicForm = () => {
     } = useForm();
    
     const onSubmit = async (data) => {
-      const payload = {
-        turkish : {...data},
-      }
-  
-            const url = `https://api.marketx.site/api/update/Properties/${id}`;
+       const formData = new FormData()
+    formData.append("turkish", JSON.stringify([data])); // ✅ stringify the array
+    
+      const url = `https://5hwtmvdt-8080.inc1.devtunnels.ms/api/update/Properties/${id}`;
 
   
       setLoading(true);
  
       try {
-        const response = await axios.put(url, payload);
+        const response = await axios.put(url, formData);
   
         console.log("Success:", response.data);
         toast.success("Property Updated Successfully")

@@ -5,6 +5,7 @@ import Checkbox from "../../components/Checkbox";
 import { useNavigate } from "react-router-dom";
 import Upload from "../../components/Upload";
 import axios from "axios";
+
 import { useForm } from "react-hook-form";
 import { getProperties } from "../../api/api";
 import { IoCloseCircleSharp } from "react-icons/io5";
@@ -53,40 +54,59 @@ const EditProperties = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log("formData", data);
+ 
 
 // data.media = MultiImages
-    
-const combinedImages = [...(propertyData?.media || []), ...MultiImages];
-data.media = combinedImages;
+  const formData = new FormData();
+  const imageFieldsToSkip = [
+  "main_image",
+  "first_floor_map_image",
+  "second_floor_map_image",
+  "sub_image_1",
+  "sub_image_2",
+  "media", // in case it's in `data`
+];
 
+Object.entries(data).forEach(([key, value]) => {
+  if (value !== "" && !imageFieldsToSkip.includes(key)) {
+    formData.append(key, value);
+  }
+});
+ if(MultiImages.length > 0){
+      MultiImages.forEach((file) => {
+        formData.append("media", file); // Append each file to formData
+      });
+    }
+    formData.append("turkish" , [])
+    // console.log("formData", data);
+     // 3. Append single images (uploadedImages)
+     if (uploadedImages.main_image?.file) {
+      formData.append("main_image", uploadedImages.main_image.file);
+    }
+    if (uploadedImages.first_floor_map_image?.file) {
+      formData.append("first_floor_map_image", uploadedImages.first_floor_map_image.file);
+    }
+    if (uploadedImages.second_floor_map_image?.file) {
+      formData.append("second_floor_map_image", uploadedImages.second_floor_map_image.file);
+    }
+    if (uploadedImages.sub_image_1?.file) {
+      formData.append("sub_image_1", uploadedImages.sub_image_1.file);
+    }
+    if (uploadedImages.sub_image_2?.file) {
+      formData.append("sub_image_2", uploadedImages.sub_image_2.file);
+    }
    
-    if (uploadedImages.main_image) {
-      data.main_image = uploadedImages.main_image;
-    }
 
-    if (uploadedImages.first_floor_map_image) {
-      data.first_floor_map_image = uploadedImages.first_floor_map_image;
-    }
-
-    if (uploadedImages.second_floor_map_image) {
-      data.second_floor_map_image = uploadedImages.second_floor_map_image;
-    }
-
-    if (uploadedImages.sub_image_1) {
-      data.sub_image_1 = uploadedImages.sub_image_1;
-    }
-
-    if (uploadedImages.sub_image_2) {
-      data.sub_image_2 = uploadedImages.sub_image_2;
-    }
-
-    // const url = `https://api.marketx.site/api/update/Properties/${id}`;
-
+     const url = `https://5hwtmvdt-8080.inc1.devtunnels.ms/api/update/Properties/${id}`;
     setLoading(true);
 
     try {
-      localStorage.setItem("engDataEdit", JSON.stringify(data));
+      const response = await axios.put(url, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      // localStorage.setItem("engDataEdit", JSON.stringify(data));
 
       console.log("Success:", data);
       navigate(`/edit_properties_ar/${index}/${id}`);
@@ -112,33 +132,27 @@ data.media = combinedImages;
     { value: "Girne", label: "Girne" },
   
   ];
-  const handleFileUpload = (base64String, fieldName) => {
-    console.log("Image base64 string:", base64String);
-
-    // Update the state with the base64 string for the corresponding image field
+   const handleFileUploadMulti = (files) => {
+    
+   
+    setMultiImages([...MultiImages, ...files]);
+  };
+  const handleFileUpload = (formData, fieldName) => {
+    const file = formData.get(fieldName);
+  
+    console.log("Uploaded File for field:", fieldName, file);
+  
+    const previewURL = URL.createObjectURL(file); // for showing preview
+  
     setUploadedImages((prevImages) => ({
       ...prevImages,
-      [fieldName]: `data:image/jpeg;base64,${base64String}`,
+      [fieldName]: {
+        file, // the real file
+        previewURL, // the preview url
+      },
     }));
   };
   
-  const handleFileUploadMulti = (base64String) => {
-    
-    console.log("Image base64 string:", base64String);
-    const imageSrc =`data:image/jpeg;base64,${base64String}`;
-    setMultiImages((prevImages) => [...prevImages, imageSrc]);
-  };
-  const wordCountValidator = value => {
-    const wordCount = value.trim().split(/\s+/).length;
-    return wordCount <= 1000 || "You cannot exceed 1000 words";
-  };
-  const removeImage = (imageToRemove) => {
-
-    setPropertyData((prevData) => ({
-      ...prevData,
-      media: prevData.media.filter((image) => image !== imageToRemove),
-    }));
-  };
   return (
     <>
       <Header />
@@ -561,7 +575,7 @@ errors={errors}
         rows="5"
         {...register("description", {
           required: "This field is required",
-          validate: wordCountValidator
+          
         })}
       />
          </div>
@@ -569,23 +583,26 @@ errors={errors}
             <div className=" flex flex-wrap justify-between my-10">
             <div className=" flex gap-6">
             <div className="flex flex-col space-y-4">
-              <Upload
-                title="Upload main image"
-                 onFileUpload={(formData) => handleFileUpload(formData, "main_image")}
-                
-                required={false}
-                fieldName="main_image"
-              />
-              {propertyData
-                ? propertyData.main_image &&
-                  (uploadedImages.main_image ? (
-                    <img
-                      src={`https://api.marketx.site/${uploadedImages.main_image}`}
-                      alt="uploadedImage"
-                      width={140}
-                      className="mb-6"
-                    />
-                  ) : (
+              
+              <div className="flex flex-col space-y-4">
+            <Upload
+  title="Main Image"
+  onFileUpload={(formData) => handleFileUpload(formData, "main_image")}
+
+  fieldName="main_image"
+
+/>
+
+              {uploadedImages.main_image && (
+                <img
+                  src={`${uploadedImages.main_image.previewURL}`}
+                  alt="uploadedImage"
+                  width={100}
+                  className="mb-6"
+                />
+              )}
+              { propertyData?.main_image &&
+                 (
                     propertyData.main_image && (
                       <img
                         src={`https://api.marketx.site/${propertyData.main_image}`}
@@ -594,30 +611,43 @@ errors={errors}
                         className="mb-6"
                       />
                     )
-                  ))
-                : null}
+                  )}
+            </div>
+
+
+               
+              {/* { 
+                   
+                    propertyData.main_image && (
+                      <img
+                        src={`https://api.marketx.site/${propertyData.main_image}`}
+                        alt="propertyImage"
+                        width={140}
+                        className="mb-6"
+                      />
+                    )} */}
+             
             </div>
             
             <div className="flex flex-col space-y-4">
               <Upload
-                title="Upload sub image 1"
-                onFileUpload={(base64String) =>
-                  handleFileUpload(base64String, "sub_image_1")
+                title="sub image 1"
+                onFileUpload={(formData) => handleFileUpload(formData, "sub_image_1")
                 }
-                register={register}
+               
                 fieldName="sub_image_1"
-                required={false}
+           
               />
-              {propertyData
-                ? propertyData.sub_image_1 &&
-                  (uploadedImages.sub_image_1 ? (
-                    <img
-                      src={`https://api.marketx.site/${uploadedImages.sub_image_1}`}
-                      alt="uploadedImage"
-                      width={140}
-                      className="mb-6"
-                    />
-                  ) : (
+              {uploadedImages.sub_image_1 && (
+                <img
+                  src={`${uploadedImages.sub_image_1.previewURL}`}
+                  alt="uploadedImage"
+                  width={100}
+                  className="mb-6"
+                />
+              )}
+              { propertyData?.sub_image_1 &&
+                 (
                     propertyData.sub_image_1 && (
                       <img
                         src={`https://api.marketx.site/${propertyData.sub_image_1}`}
@@ -626,19 +656,25 @@ errors={errors}
                         className="mb-6"
                       />
                     )
-                  ))
-                : null}
+                  )}
             </div>
             <div className="flex flex-col space-y-4">
               <Upload
-                title="Upload sub image 2"
-                onFileUpload={(base64String) =>
-                  handleFileUpload(base64String, "sub_image_2")
+                title="sub image 2"
+                onFileUpload={(formData) => handleFileUpload(formData, "sub_image_2")
                 }
-                register={register}
-                required={false}
+          x
                 fieldName="sub_image_2"
+        
               />
+              {uploadedImages.sub_image_2 && (
+                <img
+                  src={`${uploadedImages.sub_image_2.previewURL}`}
+                  alt="uploadedImage"
+                  width={100}
+                  className="mb-6"
+                />
+              )}
               {propertyData
                 ? propertyData.sub_image_2 &&
                   (uploadedImages.sub_image_2 ? (
@@ -664,14 +700,21 @@ errors={errors}
             <div className=" flex gap-6">
             <div className="flex flex-col space-y-4">
               <Upload
-                title="Upload first floor map image "
-                onFileUpload={(base64String) =>
-                  handleFileUpload(base64String, "first_floor_map_image")
+                title="first floor map image"
+                onFileUpload={(formData) => handleFileUpload(formData, "first_floor_map_image")
                 }
-                register={register}
+              
                 fieldName="first_floor_map_image"
-                required={false}
+               
               />
+              {uploadedImages.first_floor_map_image && (
+                <img
+                  src={`${uploadedImages.first_floor_map_image.previewURL}`}
+                  alt="uploadedImage"
+                  width={100}
+                  className="mb-6"
+                />
+              )}
               {propertyData
                 ? propertyData.first_floor_map_image &&
                   (uploadedImages.first_floor_map_image ? (
@@ -695,14 +738,21 @@ errors={errors}
             </div>
             <div className="flex flex-col space-y-4">
               <Upload
-                title="Upload Second floor map image "
-                onFileUpload={(base64String) =>
-                  handleFileUpload(base64String, "second_floor_map_image")
+                title="second_floor_map_image"
+                onFileUpload={(formData) => handleFileUpload(formData, "second_floor_map_image")
                 }
-                register={register}
-                required={false}
+              
                 fieldName="second_floor_map_image"
+              
               />
+              {uploadedImages.second_floor_map_image && (
+                <img
+                  src={`${uploadedImages.second_floor_map_image?.previewURL}`}
+                  alt="uploadedImage"
+                  width={100}
+                  className="mb-6"
+                />
+              )}
               {propertyData
                 ? propertyData.second_floor_map_image &&
                   (uploadedImages.second_floor_map_image ? (
@@ -727,36 +777,26 @@ errors={errors}
             </div>
             </div>
             <div className="flex gap-2 justify-between">
+               {propertyData?.media?.length > 0 && propertyData?.media?.map(item =>(
+            <img
+            alt="sas"
+             width={140}
+            src={`https://api.marketx.site/${item}`}
+            />
+           ))}
            <div className="flex gap-3 flex-wrap w-1/2">
-           {/* {propertyData?.media?.map((img, index) => (
-          <div key={index} className="relative">
-            <img src={img} alt={`Image ${index + 1}`} width={200} />
-            <p
-              onClick={() => removeImage(img)}
-              className="absolute top-0 right-0 bg-red-500 text-white p-1 rounded-full"
-            >
-              <IoCloseCircleSharp/>
-            </p>
-          </div>
-        ))}  */}
-         {/* {MultiImages? (
-        <div className='flex space-x-2'>
-       {MultiImages.map((img, id)=>(
-         <div key={id} >
-          <img src={`${img}`} alt="uploadedImage" width={200} className='mb-6' />
-         </div>
-       ))}
-    </div>
-      ) : null}  */}
+        
            </div>
-           {/* <div>
-           <UploadMulti
-        title="Upload Media"
-        onFileUpload={handleFileUploadMulti}
-        register={register}
-        fieldName="media"
-      />
-           </div> */}
+          
+            <div>
+                     <UploadMulti
+                  
+                  onImagesChange={handleFileUploadMulti}
+             
+                 
+                />
+</div>
+
 </div>
 
        

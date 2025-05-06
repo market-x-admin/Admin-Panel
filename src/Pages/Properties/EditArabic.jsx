@@ -10,51 +10,54 @@ import axios from "axios"
 import { useParams } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
-  
+import { getProperties } from '../../api/api';
 const EditArabic = () => {
   const {id, index} = useParams()
+  
   const navigate = useNavigate();
   const [prevData, setPrevData] = useState({})
   const [loading, setLoading] = useState(false);
   const [allData, setAllData] = useState({})
   const [propertyData, setPropertyData] = useState(null);
-  const fetchSingleProperties = async () => {
-    const propertiesData = prevData
-    if (propertiesData) {
-      setPropertyData(propertiesData);
-      Object.keys(propertiesData).forEach((key) => {
-        setValue(key, propertiesData[key]);
-      });
-    }
-  };
+   const fetchSingleProperties = async () => {
+     const response = await getProperties();
+ 
+     const propertiesData = response.data?.data?.[index];
+     console.log(propertiesData);
+     if (propertiesData) {
+       setPropertyData(propertiesData?.turkish[0]);
+       setPrevData(propertiesData?.turkish[0])
+       Object.keys(propertiesData?.turkish[0]).forEach((key) => {
+         setValue(key, propertiesData[key]);
+       });
+     }
+   };
   useEffect(() => {
     fetchSingleProperties();
-    console.log("data", prevData)
-    console.log("dta", allData)
-  }, [prevData]);
-  useEffect(()=>{
-    const Data = JSON.parse(localStorage.getItem("engDataEdit"))
+  
+  }, []);
+  // useEffect(()=>{
+  //   const Data = JSON.parse(localStorage.getItem("engDataEdit"))
    
-    setPrevData(Data.turkish)
-    setAllData(Data)
+  //   setPrevData(Data.turkish)
+  //   setAllData(Data)
    
-  },[])
+  // },[])
   const onSubmit = async (data) =>{
-    console.log(data)
+    const formData = new FormData()
+    formData.append("turkish", JSON.stringify([data])); // ✅ stringify the array
     setLoading(true);
-      const url = `https://api.marketx.site/api/update/Properties/${id}`;
+      const url = `https://5hwtmvdt-8080.inc1.devtunnels.ms/api/update/Properties/${id}`;
 
-    const EnglishData = allData
-    const newData = data
-    EnglishData.turkish = newData
-    const sendData = EnglishData
+   
+  
       try {
-        const response = await axios.put(url, sendData);
+        const response = await axios.put(url, formData);
         console.log("Success:", response.data);
         toast.success("Property Edited Successfully")
-       setTimeout(()=>{
-        navigate("/properties");
-       },2000)
+      //  setTimeout(()=>{
+      //   navigate("/properties");
+      //  },2000)
       } catch (error) {
         console.error("Error:", error); 
         toast.warn("Error", error)
